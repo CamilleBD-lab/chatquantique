@@ -246,8 +246,120 @@
     text-align: center;
     padding: 16px;
     margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
   }
   .video-frame iframe { width: 100%; height: 100%; border: 0; border-radius: 12px; }
+  .video-frame video {
+    width: 100%; height: 100%;
+    border-radius: 12px;
+    background: #000;
+    object-fit: contain;
+  }
+  .video-frame.has-video { padding: 0; background: #000; }
+  .video-subtitle {
+    position: absolute;
+    bottom: 48px;
+    left: 6%;
+    right: 6%;
+    text-align: center;
+    background: rgba(0,0,0,0.78);
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 6px;
+    pointer-events: none;
+    line-height: 1.45;
+    z-index: 2;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.55);
+    transition: opacity 0.15s;
+  }
+  .video-subtitle.empty { opacity: 0; }
+  .video-fs-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.15rem;
+    z-index: 3;
+    opacity: 0;
+    transition: opacity 0.2s, background 0.2s;
+    font-family: inherit;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .video-frame.has-video:hover .video-fs-btn,
+  .video-frame.has-video:focus-within .video-fs-btn { opacity: 0.85; }
+  .video-fs-btn:hover { background: rgba(0,0,0,0.92); opacity: 1 !important; }
+  .video-frame:fullscreen,
+  .video-frame:-webkit-full-screen {
+    background: #000;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    aspect-ratio: auto;
+    border-radius: 0;
+    margin: 0;
+  }
+  .video-frame:fullscreen .video-subtitle,
+  .video-frame:-webkit-full-screen .video-subtitle {
+    font-size: 1.7rem;
+    bottom: 9%;
+    padding: 9px 22px;
+    left: 8%;
+    right: 8%;
+    line-height: 1.4;
+  }
+  .video-frame:fullscreen .video-fs-btn,
+  .video-frame:-webkit-full-screen .video-fs-btn { top: 18px; right: 18px; opacity: 0.55; }
+
+  .video-fs-hint {
+    position: absolute;
+    top: 16px;
+    right: 60px;
+    background: var(--gold);
+    color: var(--green-dark);
+    font-size: 0.74rem;
+    font-weight: 800;
+    padding: 8px 14px;
+    border-radius: 10px;
+    z-index: 4;
+    letter-spacing: 0.06em;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    pointer-events: none;
+    white-space: nowrap;
+    animation: fs-hint-bounce 1.4s ease-in-out infinite;
+    text-transform: uppercase;
+  }
+  .video-fs-hint::after {
+    content: '';
+    position: absolute;
+    right: -7px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 8px solid var(--gold);
+  }
+  @keyframes fs-hint-bounce {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-4px); }
+  }
+  .video-fs-hint.hidden { display: none; }
+  .video-frame:fullscreen .video-fs-hint,
+  .video-frame:-webkit-full-screen .video-fs-hint { display: none; }
   .video-caption {
     color: var(--green-mid);
     font-size: 0.9rem;
@@ -1699,7 +1811,8 @@ const GAME_CONFIG = {
     title: "1 — Informatique classique vs quantique",
     videoTitle: "Classique vs quantique",
     videoCaption: "Le bit est un interrupteur (0 ou 1). Le qubit est une pièce qui tourne en l'air — 0 et 1 simultanément jusqu'à la mesure. Cette différence change tout.",
-    videoEmbed: null
+    videoEmbed: 'Quantique.mp4',
+    videoSubtitlesKey: 'fr'
   },
   "applications": {
     title: "2 — Les applications du quantique",
@@ -1721,6 +1834,216 @@ const GAME_CONFIG = {
   }
 };
 
+// ---- Inline subtitles (avoids file:// CORS issues with <track>) ----
+const VTT_QUANTIQUE_FR = `WEBVTT
+
+00:00:00.000 --> 00:00:05.720
+Bonjour, pour ma part, je vais vous présenter les différences entre l'informatique classique et l'informatique quantique.
+
+00:00:05.720 --> 00:00:10.840
+J'aimerais vous présenter une image qui, normalement, devrait être plus claire pour vous à la fin de ces trois minutes,
+
+00:00:10.840 --> 00:00:12.360
+soit celle d'un livre.
+
+00:00:12.360 --> 00:00:17.800
+On dit que l'informatique classique, c'est comme un livre dont on lirait les pages une à la suite de l'autre,
+
+00:00:17.800 --> 00:00:21.800
+alors que l'informatique quantique, c'est comme un livre dont on lirait toutes les pages simultanément.
+
+00:00:21.800 --> 00:00:22.760
+Allons-y.
+
+00:00:22.760 --> 00:00:25.960
+L'unité de base en informatique classique, c'est le bit.
+
+00:00:25.960 --> 00:00:30.720
+Le bit peut prendre deux valeurs, zéro ou un, et il en prend une seule des deux.
+
+00:00:30.720 --> 00:00:34.360
+L'image qui représente bien le bit, c'est l'interrupteur on ou off,
+
+00:00:34.360 --> 00:00:39.400
+et c'est ce principe qui est à la base de l'informatique moderne des ordinateurs.
+
+00:00:39.400 --> 00:00:42.360
+En informatique quantique, le bit est remplacé par le qubit.
+
+00:00:42.360 --> 00:00:47.360
+Le qubit peut aussi prendre deux valeurs, zéro ou un, mais on peut les superposer dans le temps.
+
+00:00:47.360 --> 00:00:52.440
+On passe d'une logique déterministe à une logique probabiliste.
+
+00:00:52.440 --> 00:00:56.040
+L'image qui représente souvent le qubit, c'est la sphère de Bloch.
+
+00:00:56.040 --> 00:00:59.240
+Son pôle nord, c'est le fameux zéro. Son pôle sud, c'est le 1.
+
+00:00:59.240 --> 00:01:06.840
+Et le reste de la sphère, c'est une superposition de valeurs de zéro et de 1 dans différentes proportions.
+
+00:01:06.840 --> 00:01:12.240
+Ce que le qubit représente, c'est une des grandes propriétés de la mécanique quantique.
+
+00:01:12.240 --> 00:01:17.240
+Dans le monde du quantique, les propriétés ne sont plus celles de notre monde macroscopique,
+
+00:01:17.240 --> 00:01:20.240
+mais représentent beaucoup plus celles du monde microscopique.
+
+00:01:20.240 --> 00:01:23.640
+Le monde des électrons, des atomes et des protons.
+
+00:01:23.640 --> 00:01:28.040
+De ça découle trois grandes propriétés. La première : la superposition.
+
+00:01:28.040 --> 00:01:34.240
+C'est l'idée que dans le monde quantique, un élément peut avoir deux valeurs simultanément jusqu'au moment où c'est mesuré.
+
+00:01:34.240 --> 00:01:37.040
+Une autre image classique, c'est celle de la pièce de monnaie.
+
+00:01:37.040 --> 00:01:40.840
+Quand la pièce est dans les airs, elle peut valoir pile, elle peut valoir face.
+
+00:01:40.840 --> 00:01:44.840
+La mesure n'est prise qu'au moment où je ramasse la pièce contre ma main.
+
+00:01:44.840 --> 00:01:50.840
+La deuxième propriété, c'est l'intrication. C'est l'idée que deux particules connectées peuvent avoir des états qui se répondent.
+
+00:01:50.840 --> 00:01:53.040
+Et la dernière propriété, c'est l'interférence.
+
+00:01:53.040 --> 00:01:59.240
+Un peu à la façon des vagues successives qui peuvent, sur le bord de la plage en été, faire une vague plus grosse.
+
+00:01:59.240 --> 00:02:05.440
+Dans la mécanique quantique, l'état de différentes particules peut s'amplifier ou s'annuler.
+
+00:02:05.440 --> 00:02:09.640
+On comprend mieux dans ce cas comment fonctionne le calcul dans le monde du quantique.
+
+00:02:09.640 --> 00:02:17.040
+Dans le monde classique, disons que je veux trouver la sortie d'un labyrinthe : je vais tester les différents chemins les uns après les autres jusqu'à trouver le bon.
+
+00:02:17.040 --> 00:02:23.240
+Dans le monde quantique, grâce aux trois propriétés évoquées plus tôt — superposition, je vais tester tous les chemins en même temps.
+
+00:02:23.240 --> 00:02:29.240
+Intrication, c'est comme si j'envoyais plein d'explorateurs qui vont communiquer entre eux pour tester des chemins signifiants.
+
+00:02:29.240 --> 00:02:35.240
+Et amplification, le bon chemin ou la bonne réponse sera amplifié à la sortie du labyrinthe.
+
+00:02:35.240 --> 00:02:42.040
+Dernier élément : quand on pense à un ordinateur quantique, ça n'a rien à voir avec les ordinateurs qu'on a chez nous.
+
+00:02:42.040 --> 00:02:52.440
+Ce qu'on voit ici représenté, c'est le cryostat — température extrêmement froide, isolation totale et forte sensibilité aux erreurs.
+
+00:02:52.440 --> 00:02:56.640
+L'état quantique ne peut se préserver que durant quelques microsecondes.
+`;
+
+function parseVTT(text) {
+  const lines = text.split('\n');
+  const cues = [];
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i].trim();
+    if (line.includes('-->')) {
+      const m = line.match(/(\d{1,2}:\d{2}:\d{2}\.\d{3})\s*-->\s*(\d{1,2}:\d{2}:\d{2}\.\d{3})/);
+      if (m) {
+        const start = vttTimeToSec(m[1]);
+        const end = vttTimeToSec(m[2]);
+        const textLines = [];
+        i++;
+        while (i < lines.length && lines[i].trim() !== '') {
+          textLines.push(lines[i].trim());
+          i++;
+        }
+        cues.push({ start: start, end: end, text: textLines.join(' ') });
+      }
+    }
+    i++;
+  }
+  return cues;
+}
+function vttTimeToSec(s) {
+  const parts = s.split(':');
+  const sec = parts[2].split('.');
+  return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(sec[0]) + parseInt(sec[1]) / 1000;
+}
+
+const SUBTITLES = {
+  'fr': parseVTT(VTT_QUANTIQUE_FR)
+};
+
+function attachSubtitles(cues) {
+  const video = document.getElementById('game-video');
+  const overlay = document.getElementById('video-subtitle');
+  if (!video || !overlay) return;
+  let lastIdx = -1;
+  video.addEventListener('timeupdate', () => {
+    const t = video.currentTime;
+    const idx = cues.findIndex(c => t >= c.start && t < c.end);
+    if (idx !== lastIdx) {
+      lastIdx = idx;
+      if (idx === -1) {
+        overlay.classList.add('empty');
+      } else {
+        overlay.textContent = cues[idx].text;
+        overlay.classList.remove('empty');
+      }
+    }
+  });
+}
+
+function fsEnter(el) {
+  return (el.requestFullscreen || el.webkitRequestFullscreen).call(el);
+}
+function fsExit() {
+  return (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+}
+function fsCurrent() {
+  return document.fullscreenElement || document.webkitFullscreenElement;
+}
+
+function attachFullscreenButton() {
+  const btn = document.getElementById('video-fs-btn');
+  const frame = document.getElementById('video-frame');
+  const hint = document.getElementById('video-fs-hint');
+  if (!btn || !frame) return;
+  btn.addEventListener('click', () => {
+    if (hint) hint.classList.add('hidden');
+    if (fsCurrent()) fsExit();
+    else fsEnter(frame).catch(() => {});
+  });
+}
+
+// Global handler: if the bare video element goes fullscreen (e.g. via the
+// browser's native button or a gesture), redirect to fullscreening the frame
+// so that the subtitle overlay stays visible.
+function setupFullscreenRedirect() {
+  const handler = () => {
+    const fs = fsCurrent();
+    const video = document.getElementById('game-video');
+    const frame = document.getElementById('video-frame');
+    if (fs && video && frame && fs === video) {
+      fsExit().then(() => {
+        setTimeout(() => fsEnter(frame).catch(() => {}), 60);
+      }).catch(() => {});
+    }
+  };
+  document.addEventListener('fullscreenchange', handler);
+  document.addEventListener('webkitfullscreenchange', handler);
+}
+setupFullscreenRedirect();
+
 function openGame(key) {
   const cfg = GAME_CONFIG[key];
   document.getElementById('game-title').textContent = cfg.title;
@@ -1728,9 +2051,26 @@ function openGame(key) {
   document.getElementById('video-caption').textContent = cfg.videoCaption;
 
   const frame = document.getElementById('video-frame');
-  frame.innerHTML = cfg.videoEmbed
-    ? `<iframe src="${cfg.videoEmbed}" allowfullscreen></iframe>`
-    : '<span>Vidéo à venir</span>';
+  frame.classList.remove('has-video');
+  if (cfg.videoEmbed && /\.(mp4|webm|ogg)$/i.test(cfg.videoEmbed)) {
+    frame.classList.add('has-video');
+    frame.innerHTML = `
+      <video controls preload="metadata" id="game-video">
+        <source src="${cfg.videoEmbed}" type="video/mp4">
+      </video>
+      <div class="video-fs-hint" id="video-fs-hint">Grand écran ici →</div>
+      <button class="video-fs-btn" id="video-fs-btn" title="Plein écran" aria-label="Plein écran">⛶</button>
+      <div class="video-subtitle empty" id="video-subtitle"></div>
+    `;
+    if (cfg.videoSubtitlesKey && SUBTITLES[cfg.videoSubtitlesKey]) {
+      attachSubtitles(SUBTITLES[cfg.videoSubtitlesKey]);
+    }
+    attachFullscreenButton();
+  } else if (cfg.videoEmbed) {
+    frame.innerHTML = `<iframe src="${cfg.videoEmbed}" allowfullscreen></iframe>`;
+  } else {
+    frame.innerHTML = '<span>Vidéo à venir</span>';
+  }
 
   document.querySelectorAll('.game-stage').forEach(s => s.classList.remove('active'));
   document.getElementById('game-' + key).classList.add('active');

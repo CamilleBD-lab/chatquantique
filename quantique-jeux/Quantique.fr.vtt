@@ -1,0 +1,113 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:05.720
+ Bonjour, pour ma part, je vais vous présenter les différences entre l'informatique classique et l'informatique quantique.
+
+00:00:05.720 --> 00:00:10.840
+ J'aimerais vous présenter une image qui, normalement, devrait être plus claire pour vous à la fin de ces trois minutes,
+
+00:00:10.840 --> 00:00:12.360
+ soit celle d'un livre.
+
+00:00:12.360 --> 00:00:17.800
+ On dit que l'informatique classique, c'est comme un livre dont on l'irait les pages unes à la suite de l'autre,
+
+00:00:17.800 --> 00:00:21.800
+ alors que l'informatique quantique, c'est comme un livre dont on l'irait toutes les pages simultanément.
+
+00:00:21.800 --> 00:00:22.760
+ Allons-y.
+
+00:00:22.760 --> 00:00:25.960
+ L'unité de base en informatique classique, c'est le bit.
+
+00:00:25.960 --> 00:00:30.720
+ Donc, le bit peut prendre deux valeurs, zéro ou une, et il en prend une seule des deux.
+
+00:00:30.720 --> 00:00:34.360
+ L'image qui représente bien le bit, c'est l'interrupteur on ou off,
+
+00:00:34.360 --> 00:00:39.400
+ et c'est ce principe-là qui est à la base de l'informatique moderne des ordinateurs.
+
+00:00:39.400 --> 00:00:42.360
+ En informatique quantique, le bit est remplacé par le qubit.
+
+00:00:42.360 --> 00:00:47.360
+ Donc, le qubit peut aussi prendre deux valeurs, zéro ou une, mais on peut les superposer dans le temps.
+
+00:00:47.360 --> 00:00:52.440
+ Donc, en fait, on passe d'une logique déterministe à une logique probabiliste.
+
+00:00:52.440 --> 00:00:56.040
+ L'image qui représente souvent le qubit, c'est l'asphare de Boche.
+
+00:00:56.040 --> 00:00:59.240
+ Donc, son pôle nord, c'est le fameux zéro. Son pôle sud, c'est le 1.
+
+00:00:59.240 --> 00:01:06.840
+ Et le reste de l'asphare, c'est une superposition de valeurs de zéro et de 1 dans différentes proportions.
+
+00:01:06.840 --> 00:01:12.240
+ En fait, ce que le qubit représente, c'est une des grandes propriétés de la mécanique quantique.
+
+00:01:12.240 --> 00:01:17.240
+ Donc, ce qui se passe, c'est que dans le monde du quantique, les propriétés ne sont plus celles de notre monde macroscopique,
+
+00:01:17.240 --> 00:01:20.240
+ mais représentent beaucoup plus celles du monde microscopique.
+
+00:01:20.240 --> 00:01:23.640
+ Donc, le monde des électrons, des atomes et des protons.
+
+00:01:23.640 --> 00:01:28.040
+ Et de ça, découle trois grandes propriétés. Donc, la première, c'est la superposition.
+
+00:01:28.040 --> 00:01:34.240
+ C'est l'idée que, dans le monde quantique, un élément peut avoir deux valeurs simultanément jusqu'au moment où c'est mesuré.
+
+00:01:34.240 --> 00:01:37.040
+ L'autre image classique qu'on utilise souvent, c'est l'image de la pièce de monnaie.
+
+00:01:37.040 --> 00:01:40.840
+ Quand la pièce de monnaie est dans les airs, elle peut valoir pile, elle peut valoir face.
+
+00:01:40.840 --> 00:01:44.840
+ Je ne le sais où la mesure n'est prise qu'au moment où je ramasse la pièce contre ma main.
+
+00:01:44.840 --> 00:01:50.840
+ La deuxième propriété, c'est l'interprétation. C'est l'idée que deux particules non connectées peuvent avoir des états qui se répondent.
+
+00:01:50.840 --> 00:01:53.040
+ Et la dernière propriété, c'est l'interférence.
+
+00:01:53.040 --> 00:01:59.240
+ Donc, un peu à la façon des vagues successives qui peuvent, quand on est sur le bord de la plage, en été faire une vague plus grosse.
+
+00:01:59.240 --> 00:02:05.440
+ Mais dans la mécanique quantique, l'état de différentes particules peuvent s'amplifier ou s'annuler.
+
+00:02:05.440 --> 00:02:09.640
+ On comprend mieux dans ce cas-là comment fonctionne le calcul dans le monde du quantique.
+
+00:02:09.640 --> 00:02:17.040
+ Donc, dans le monde classique, disons que je veux trouver la sortie d'un labyrinthe, je vais tester les différents chemins les uns après les autres jusqu'à trouver le bon.
+
+00:02:17.040 --> 00:02:23.240
+ Dans le monde quantique, en raison des trois propriétés évoquées plus tôt, superposition, je vais tester tous les chemins en même temps.
+
+00:02:23.240 --> 00:02:29.240
+ Interprétation, c'est comme si j'en voyais plein d'explorateurs qui vont communiquer entre eux pour tester des chemins signifiant.
+
+00:02:29.240 --> 00:02:35.240
+ Et amplification, le bon chemin ou la bonne réponse sera amplifié à la sortie du labyrinthe.
+
+00:02:35.240 --> 00:02:42.040
+ Dernier élément, il serait intéressant de mentionner que quand on pense à un ordinateur quantique, ça n'a rien à voir avec les ordinateurs qu'on a chez nous.
+
+00:02:42.040 --> 00:02:52.440
+ Il s'agit d'ordinateur, en fait, ce qu'on voit ici représenté, c'est le cryostat, donc température extrêmement froide, isolation totale et vraiment forte sensibilité aux erreurs.
+
+00:02:52.440 --> 00:02:56.640
+ Donc, l'état quantique ne peut préserver que durant quelques microsecondes.
+
