@@ -1,0 +1,2735 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quantique — Expériences interactives</title>
+<style>
+  :root {
+    --beige: #ECEAE2;
+    --beige-soft: #E2DFD5;
+    --beige-deep: #D5D1C4;
+    --green-dark: #2F4F4A;
+    --green-mid: #3D6B62;
+    --green-light: #5A7570;
+    --green-success: #5A8A66;
+    --gold: #C9A961;
+    --gold-soft: #E8D4A2;
+    --rose: #C97A7A;
+    --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif;
+    background: var(--beige);
+    color: var(--green-dark);
+    min-height: 100vh;
+    padding: 32px 20px;
+  }
+  .container { max-width: 1320px; margin: 0 auto; }
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    color: var(--green-dark);
+  }
+  .subtitle {
+    color: var(--green-light);
+    margin-bottom: 32px;
+    font-size: 1.05rem;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  button {
+    background: var(--green-dark);
+    border: none;
+    color: var(--white);
+    padding: 12px 28px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    font-family: inherit;
+  }
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(47,79,74,0.25);
+    background: var(--green-mid);
+  }
+  button.ghost {
+    background: transparent;
+    color: var(--green-dark);
+    border: 2px solid var(--green-dark);
+  }
+  button.ghost:hover { background: var(--green-dark); color: var(--white); }
+  button:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  .center { text-align: center; margin-top: 18px; }
+
+  /* ---- Password gate ---- */
+  .gate {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gate-card {
+    background: var(--white);
+    border: 1px solid rgba(47,79,74,0.1);
+    padding: 44px 40px;
+    border-radius: 16px;
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(47,79,74,0.08);
+  }
+  .gate-card .gate-cat { margin: 0 auto 12px; display: block; }
+  .gate-card h2 {
+    font-size: 1.5rem;
+    color: var(--green-dark);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .gate-card p {
+    color: var(--green-light);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .gate-input {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1rem;
+    border: 2px solid rgba(47,79,74,0.2);
+    border-radius: 10px;
+    background: var(--beige);
+    color: var(--green-dark);
+    font-family: inherit;
+    margin-bottom: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .gate-input:focus { border-color: var(--green-dark); }
+  .gate-error {
+    color: var(--rose);
+    font-size: 0.88rem;
+    min-height: 20px;
+    margin-bottom: 10px;
+  }
+
+  /* ---- Menu ---- */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+  }
+  @media (max-width: 900px) { .menu-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .menu-grid { grid-template-columns: 1fr; } }
+
+  .pastille {
+    background: var(--white);
+    border: 1px solid rgba(47,79,74,0.12);
+    border-radius: 24px;
+    padding: 28px 22px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    box-shadow: 0 4px 16px rgba(47,79,74,0.06);
+    position: relative;
+  }
+  .pastille:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 32px rgba(47,79,74,0.18);
+    border-color: var(--green-dark);
+  }
+  .pastille .circle {
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    background: var(--green-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    transition: transform 0.3s, background 0.2s;
+  }
+  .pastille:hover .circle {
+    transform: rotate(-6deg) scale(1.05);
+    background: var(--green-mid);
+  }
+  .pastille h3 {
+    color: var(--green-dark);
+    font-size: 1.02rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .pastille p {
+    color: var(--green-light);
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+  .pastille .badge-status {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 0.65rem;
+    background: var(--gold-soft);
+    color: var(--green-dark);
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .pastille .badge-status.ready { background: var(--green-dark); color: var(--white); }
+
+  /* ---- Game screen layout ---- */
+  .game-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .game-header h1 { font-size: 1.7rem; margin: 0; flex: 1; text-align: center; }
+  .back-btn {
+    background: transparent;
+    color: var(--green-dark);
+    padding: 9px 18px;
+    font-size: 0.88rem;
+    border: 2px solid var(--green-dark);
+  }
+
+  .split-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 22px;
+  }
+  @media (max-width: 1000px) { .split-layout { grid-template-columns: 1fr; } }
+
+  .game-area, .video-area {
+    background: var(--white);
+    border: 1px solid rgba(47,79,74,0.1);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 4px 16px rgba(47,79,74,0.05);
+  }
+  .video-area { display: flex; flex-direction: column; }
+  .video-area h3 {
+    color: var(--green-dark);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .video-frame {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--beige-soft);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--green-light);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .video-frame iframe { width: 100%; height: 100%; border: 0; border-radius: 12px; }
+  .video-caption {
+    color: var(--green-mid);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .game-stage { display: none; }
+  .game-stage.active { display: block; }
+
+  /* ===== GAME 1 — QUIZ ===== */
+
+  .cvq-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .cvq-progress .step {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--beige-soft);
+    color: var(--green-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+  }
+  .cvq-progress .step.active {
+    background: var(--green-dark);
+    color: var(--white);
+    transform: scale(1.1);
+  }
+  .cvq-progress .step.done {
+    background: var(--gold);
+    color: var(--green-dark);
+  }
+  .cvq-progress .bar {
+    flex: 0 0 18px;
+    height: 2px;
+    background: var(--beige-soft);
+  }
+  .cvq-progress .bar.done { background: var(--gold); }
+
+  .cvq-question-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding: 14px 18px;
+    background: var(--beige);
+    border-radius: 14px;
+    border-left: 4px solid var(--green-dark);
+  }
+  .cvq-mascot { flex-shrink: 0; width: 60px; height: 60px; }
+  .cvq-q-title-block { flex: 1; }
+  .cvq-q-title-block h3 {
+    color: var(--green-dark);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .cvq-q-title-block p {
+    color: var(--green-mid);
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  .cvq-score-box {
+    flex-shrink: 0;
+    background: var(--white);
+    border: 1px solid rgba(47,79,74,0.15);
+    border-radius: 10px;
+    padding: 8px 14px;
+    text-align: center;
+  }
+  .cvq-score-box .label {
+    font-size: 0.65rem;
+    color: var(--green-light);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+  .cvq-score-box .score {
+    font-family: "SF Mono", Monaco, monospace;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--green-dark);
+  }
+
+  .cvq-choice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 700px) { .cvq-choice-grid { grid-template-columns: 1fr; } }
+
+  .cvq-choice {
+    background: var(--beige);
+    border: 3px solid transparent;
+    border-radius: 14px;
+    padding: 24px 16px 18px;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 240px;
+    text-align: center;
+    position: relative;
+  }
+  .cvq-choice:hover:not(.locked) {
+    transform: translateY(-4px);
+    border-color: var(--green-mid);
+    box-shadow: 0 10px 24px rgba(47,79,74,0.12);
+  }
+  .cvq-choice.locked { cursor: default; }
+  .cvq-choice.correct {
+    border-color: var(--green-success);
+    background: #E8F0E2;
+  }
+  .cvq-choice.wrong {
+    border-color: var(--rose);
+    background: #F5E6E6;
+  }
+  .cvq-choice .panel-tag {
+    font-size: 0.7rem;
+    color: var(--green-light);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    margin-top: 14px;
+  }
+  .cvq-choice.correct .panel-tag { color: var(--green-success); }
+  .cvq-choice.wrong .panel-tag { color: var(--rose); }
+  .cvq-choice .check-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .cvq-choice.correct .check-icon, .cvq-choice.wrong .check-icon { display: flex; }
+  .cvq-choice.correct .check-icon { background: var(--green-success); color: #fff; }
+  .cvq-choice.wrong .check-icon { background: var(--rose); color: #fff; }
+
+  .cvq-result-banner {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+  }
+  .cvq-result-banner.correct { background: #E8F0E2; color: #2E5A3A; }
+  .cvq-result-banner.wrong { background: #F5E6E6; color: #8A3A3A; }
+
+  .cvq-feedback-card {
+    background: var(--green-dark);
+    color: var(--beige);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .cvq-feedback-card h4 {
+    color: var(--gold-soft);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+  .cvq-feedback-card p {
+    line-height: 1.65;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }
+  .cvq-feedback-card p:last-child { margin-bottom: 0; }
+  .cvq-feedback-card strong { color: var(--white); font-weight: 700; }
+  .cvq-feedback-card em { color: var(--gold-soft); font-style: italic; }
+
+  .cvq-hint {
+    text-align: center;
+    color: var(--green-light);
+    font-size: 0.88rem;
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  /* ---- Panel visual elements (shared) ---- */
+  .stage-area-mini {
+    width: 100%;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+  }
+
+  /* Cat box (Schrödinger) */
+  .cat-box {
+    width: 130px;
+    height: 130px;
+    background: var(--beige-deep);
+    border-radius: 14px;
+    border: 3px solid var(--green-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .cat-box .lid {
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    height: 26px;
+    background: var(--green-dark);
+    border-radius: 14px 14px 0 0;
+    transform-origin: top left;
+    transform: rotate(-95deg);
+  }
+
+  /* Twin cats */
+  .twin-cats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    position: relative;
+    padding: 18px 8px;
+  }
+  .twin-cat { padding: 6px; position: relative; }
+  .entangle-line {
+    position: absolute;
+    top: 50%;
+    left: 14%;
+    right: 14%;
+    height: 3px;
+    pointer-events: none;
+  }
+  .twin-cats.entangled .entangle-line {
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--green-dark) 50%, var(--gold) 70%, transparent 100%);
+    background-size: 200% 100%;
+    animation: entangle-flow 2s linear infinite;
+    border-radius: 2px;
+    box-shadow: 0 0 12px rgba(201,169,97,0.5);
+  }
+  @keyframes entangle-flow {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+  }
+  .twin-cat.bobbing { animation: bob 2.4s ease-in-out infinite; }
+  .twin-cat.bobbing-pair { animation: bob 2.4s ease-in-out infinite; }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
+  /* Houses */
+  .house-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    width: 100%;
+    max-width: 240px;
+    margin: 0 auto;
+  }
+  .house {
+    aspect-ratio: 1;
+    background: var(--beige-soft);
+    border: 2px solid var(--green-mid);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .house-roof {
+    width: 0; height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-bottom: 10px solid var(--green-dark);
+    margin-bottom: -2px;
+  }
+  .house.classical-checked { opacity: 0.4; }
+  .house.classical-active {
+    background: var(--gold);
+    border-color: var(--green-dark);
+    animation: searching 1s ease-in-out infinite;
+  }
+  @keyframes searching {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  .house.all-flash {
+    background: var(--gold-soft);
+    border-color: var(--gold);
+    animation: q-pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes q-pulse {
+    0%, 100% { box-shadow: 0 0 0 rgba(201,169,97,0); }
+    50% { box-shadow: 0 0 14px rgba(201,169,97,0.7); }
+  }
+
+  /* Maze */
+  .maze {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+    aspect-ratio: 1;
+  }
+  .maze-cell {
+    background: var(--beige-soft);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .maze-cell.wall { background: var(--green-dark); }
+  .maze-cell.start { background: var(--gold-soft); }
+  .maze-cell.end { background: #A8C8A0; }
+  .maze-cell.classical-path { background: var(--gold); }
+  .maze-cell.all-lit {
+    background: rgba(94,138,102,0.55);
+    animation: q-pulse 1.5s ease-in-out infinite;
+  }
+  .maze-cell.cat-here::after {
+    content: '🐱';
+    font-size: 1rem;
+    position: absolute;
+  }
+
+  /* Recap */
+  .recap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 700px) { .recap-grid { grid-template-columns: 1fr; } }
+  .recap-card {
+    background: var(--beige);
+    border-radius: 12px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--green-dark);
+  }
+  .recap-card h5 {
+    font-size: 0.88rem;
+    color: var(--green-dark);
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+  .recap-card p {
+    font-size: 0.85rem;
+    color: var(--green-mid);
+    line-height: 1.5;
+  }
+  .recap-summary {
+    background: var(--green-dark);
+    color: var(--beige);
+    padding: 22px 20px;
+    border-radius: 12px;
+    text-align: center;
+    margin: 16px 0;
+  }
+  .recap-summary .big {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--gold-soft);
+    margin: 8px 0;
+    font-family: "SF Mono", Monaco, monospace;
+  }
+  .recap-summary p { line-height: 1.55; font-size: 0.95rem; }
+
+  .dancing-cat {
+    width: 100px;
+    height: 100px;
+    margin: 6px auto 0;
+    animation: dance 0.7s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+  @keyframes dance {
+    0%, 100% { transform: rotate(-8deg) translateY(0); }
+    25% { transform: rotate(0deg) translateY(-8px); }
+    50% { transform: rotate(8deg) translateY(0); }
+    75% { transform: rotate(0deg) translateY(-8px); }
+  }
+  .heart {
+    position: absolute;
+    color: var(--rose);
+    font-size: 1.2rem;
+    animation: float-heart 1.6s ease-out infinite;
+    pointer-events: none;
+  }
+  @keyframes float-heart {
+    0% { opacity: 0; transform: translateY(0) scale(0.5); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-60px) scale(1.2); }
+  }
+
+  /* Superposed cat */
+  .superposed-cat { position: relative; display: inline-block; }
+  .superposed-cat .cat-layer {
+    position: absolute;
+    inset: 0;
+    animation: super-shimmer 1.6s infinite alternate ease-in-out;
+  }
+  .superposed-cat .cat-layer-1 { animation-delay: 0s; opacity: 0.55; }
+  .superposed-cat .cat-layer-2 { animation-delay: 0.8s; opacity: 0.55; transform: translate(5px, 4px); }
+  @keyframes super-shimmer {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.75; }
+  }
+
+  /* Placeholder games */
+  .placeholder-game {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--green-light);
+  }
+  .placeholder-game h3 {
+    color: var(--green-dark);
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  .placeholder-game p { line-height: 1.6; max-width: 400px; margin: 0 auto; }
+
+  .cvq-nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 14px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(47,79,74,0.1);
+  }
+
+  /* ===== GAME 2 — Applications quiz ===== */
+  .apq-mascot {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .apq-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    padding: 12px 18px;
+    background: var(--beige);
+    border-radius: 12px;
+  }
+  .apq-header .stat-block { text-align: left; }
+  .apq-header .stat-block .label {
+    font-size: 0.65rem;
+    color: var(--green-light);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+  }
+  .apq-header .stat-block .value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    font-family: "SF Mono", Monaco, monospace;
+  }
+
+  .apq-question-card {
+    background: var(--beige);
+    border-radius: 16px;
+    padding: 26px 24px;
+    text-align: center;
+    margin-bottom: 16px;
+    border-left: 4px solid var(--green-dark);
+  }
+  .apq-icon { font-size: 2.8rem; margin-bottom: 10px; line-height: 1; }
+  .apq-situation {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    line-height: 1.4;
+  }
+
+  .apq-prompt {
+    text-align: center;
+    font-size: 0.92rem;
+    color: var(--green-mid);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .apq-choices {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 600px) { .apq-choices { grid-template-columns: 1fr; } }
+
+  .apq-choice {
+    border: 3px solid;
+    background: var(--white);
+    padding: 16px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: all 0.18s;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--green-dark);
+  }
+  .apq-choice:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(47,79,74,0.15);
+  }
+  .apq-choice:disabled { cursor: default; opacity: 0.45; }
+
+  .apq-choice .badge-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .apq-choice.quantique { border-color: #7F77DD; }
+  .apq-choice.quantique:hover:not(:disabled) { background: #7F77DD; color: white; }
+  .apq-choice.quantique .badge-dot { background: #7F77DD; }
+  .apq-choice.hybride { border-color: #E8B040; }
+  .apq-choice.hybride:hover:not(:disabled) { background: #E8B040; color: white; }
+  .apq-choice.hybride .badge-dot { background: #E8B040; }
+  .apq-choice.classique { border-color: #5DA0E0; }
+  .apq-choice.classique:hover:not(:disabled) { background: #5DA0E0; color: white; }
+  .apq-choice.classique .badge-dot { background: #5DA0E0; }
+
+  .apq-choice.is-correct {
+    background: #0F6E56 !important;
+    border-color: #0F6E56 !important;
+    color: white !important;
+    opacity: 1 !important;
+  }
+  .apq-choice.is-wrong {
+    background: #C75545 !important;
+    border-color: #C75545 !important;
+    color: white !important;
+    opacity: 1 !important;
+  }
+  .apq-choice.is-correct .badge-dot,
+  .apq-choice.is-wrong .badge-dot { background: white; }
+
+  .apq-result {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+  }
+  .apq-result.correct { background: #E8F0E2; color: #0F6E56; }
+  .apq-result.wrong { background: #F5E6E6; color: #8A3A3A; }
+
+  .apq-explanation {
+    background: var(--green-dark);
+    color: var(--beige);
+    padding: 18px 22px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+  }
+  .apq-explanation h4 {
+    color: var(--gold-soft);
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .apq-explanation p { line-height: 1.6; font-size: 0.93rem; margin-bottom: 8px; }
+  .apq-explanation p:last-child { margin-bottom: 0; }
+  .apq-explanation .ref {
+    color: var(--gold-soft);
+    font-style: italic;
+    font-size: 0.82rem;
+    border-top: 1px solid rgba(232,212,162,0.25);
+    padding-top: 8px;
+    margin-top: 10px;
+  }
+
+  .apq-intro-card {
+    background: var(--beige);
+    border-radius: 16px;
+    padding: 36px 28px;
+    text-align: center;
+    border-left: 4px solid var(--gold);
+  }
+  .apq-intro-card .big-emoji { font-size: 3rem; margin-bottom: 14px; }
+  .apq-intro-card h3 {
+    color: var(--green-dark);
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    font-weight: 800;
+  }
+  .apq-intro-card .lead {
+    color: var(--green-mid);
+    font-size: 0.96rem;
+    line-height: 1.55;
+    max-width: 440px;
+    margin: 0 auto 14px;
+    font-style: italic;
+  }
+  .apq-intro-card .helper {
+    color: var(--green-light);
+    font-size: 0.86rem;
+    line-height: 1.5;
+    max-width: 440px;
+    margin: 0 auto 22px;
+  }
+
+  /* Speaker bubble — cat gives the feedback */
+  .speaker-bubble {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .speaker-avatar {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    background: var(--beige);
+    border-radius: 50%;
+    border: 3px solid var(--green-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+  }
+  .speaker-bubble > .apq-explanation,
+  .speaker-bubble > .cvq-feedback-card {
+    flex: 1;
+    position: relative;
+    margin-bottom: 0;
+  }
+  .speaker-bubble > .apq-explanation::before,
+  .speaker-bubble > .cvq-feedback-card::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 22px;
+    width: 0;
+    height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-right: 11px solid var(--green-dark);
+  }
+  @media (max-width: 600px) {
+    .speaker-bubble { flex-direction: column; align-items: center; }
+    .speaker-bubble > .apq-explanation::before,
+    .speaker-bubble > .cvq-feedback-card::before { display: none; }
+  }
+
+  .apq-final {
+    text-align: center;
+  }
+  .apq-final-score {
+    font-size: 3rem;
+    font-weight: 800;
+    font-family: "SF Mono", Monaco, monospace;
+    color: var(--gold);
+    margin: 8px 0;
+  }
+  .apq-final-msg {
+    background: var(--green-dark);
+    color: var(--beige);
+    padding: 22px 24px;
+    border-radius: 14px;
+    margin: 14px 0;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  /* ===== GAME 3 — Risques timeline quiz ===== */
+  .rsq-mascot {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .rsq-card-display {
+    background: var(--beige);
+    border-radius: 16px;
+    padding: 26px 22px;
+    text-align: center;
+    margin-bottom: 16px;
+    border-left: 4px solid var(--green-dark);
+  }
+  .rsq-icon { font-size: 2.6rem; margin-bottom: 10px; line-height: 1; }
+  .rsq-situation {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    line-height: 1.5;
+    font-style: italic;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .rsq-prompt {
+    text-align: center;
+    font-size: 0.92rem;
+    color: var(--green-mid);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .rsq-zones {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 700px) { .rsq-zones { grid-template-columns: repeat(2, 1fr); } }
+
+  .rsq-zone {
+    border: 3px solid;
+    background: var(--white);
+    padding: 14px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--green-dark);
+    transition: all 0.18s;
+    min-height: 110px;
+  }
+  .rsq-zone:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(47,79,74,0.15);
+  }
+  .rsq-zone:disabled { cursor: default; opacity: 0.45; }
+  .rsq-zone .zone-emoji { font-size: 1.4rem; line-height: 1; }
+  .rsq-zone .zone-name { font-weight: 700; font-size: 0.92rem; }
+  .rsq-zone .zone-desc { font-size: 0.72rem; color: var(--green-light); line-height: 1.3; }
+
+  .rsq-zone.maintenant { border-color: #C75545; }
+  .rsq-zone.maintenant:hover:not(:disabled) { background: #C75545; color: white; }
+  .rsq-zone.maintenant:hover:not(:disabled) .zone-desc { color: rgba(255,255,255,0.85); }
+  .rsq-zone.bientot { border-color: #E89A45; }
+  .rsq-zone.bientot:hover:not(:disabled) { background: #E89A45; color: white; }
+  .rsq-zone.bientot:hover:not(:disabled) .zone-desc { color: rgba(255,255,255,0.85); }
+  .rsq-zone.plus-tard { border-color: #5DA0E0; }
+  .rsq-zone.plus-tard:hover:not(:disabled) { background: #5DA0E0; color: white; }
+  .rsq-zone.plus-tard:hover:not(:disabled) .zone-desc { color: rgba(255,255,255,0.85); }
+  .rsq-zone.faux { border-color: #888888; }
+  .rsq-zone.faux:hover:not(:disabled) { background: #888888; color: white; }
+  .rsq-zone.faux:hover:not(:disabled) .zone-desc { color: rgba(255,255,255,0.85); }
+
+  .rsq-zone.is-correct {
+    background: #0F6E56 !important;
+    border-color: #0F6E56 !important;
+    color: white !important;
+    opacity: 1 !important;
+  }
+  .rsq-zone.is-correct .zone-desc { color: rgba(255,255,255,0.85) !important; }
+  .rsq-zone.is-wrong {
+    background: #C75545 !important;
+    border-color: #C75545 !important;
+    color: white !important;
+    opacity: 1 !important;
+  }
+  .rsq-zone.is-wrong .zone-desc { color: rgba(255,255,255,0.85) !important; }
+
+  /* Reuse apq-result, apq-explanation styling for game 3 feedback */
+
+  /* ===== Q5 environment box (game 1 décohérence) ===== */
+  .env-box {
+    width: 170px;
+    padding: 14px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    border: 2px solid;
+  }
+  .env-box.warm { background: #FFF6DC; border-color: #E8B040; }
+  .env-box.cold { background: #DDEEF6; border-color: #5DA0E0; }
+  .env-box .env-temp-top {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+    font-family: "SF Mono", Monaco, monospace;
+  }
+  .env-box .env-label {
+    font-size: 0.7rem;
+    color: var(--green-light);
+    margin-top: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+  }
+  .env-box .snow {
+    position: absolute;
+    font-size: 0.95rem;
+    opacity: 0.7;
+    animation: snowfall 2.4s ease-in-out infinite alternate;
+  }
+  .env-box .snow-l { left: 8px; top: 32px; animation-delay: 0s; }
+  .env-box .snow-r { right: 8px; top: 56px; animation-delay: 1s; }
+  @keyframes snowfall {
+    0% { transform: translateY(0); opacity: 0.4; }
+    100% { transform: translateY(8px); opacity: 0.85; }
+  }
+
+  /* ===== Mastery card (menu) ===== */
+  .mastery-card {
+    background: var(--white);
+    border: 1px solid rgba(47,79,74,0.12);
+    border-radius: 16px;
+    padding: 18px 22px;
+    margin: 18px 0 28px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 4px 16px rgba(47,79,74,0.06);
+  }
+  @media (max-width: 600px) {
+    .mastery-card { flex-direction: column; text-align: center; }
+  }
+  .mastery-cat-wrap {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--green-dark);
+    background: var(--beige);
+    transition: border-color 0.4s, background 0.4s;
+  }
+  .mastery-info { flex: 1; min-width: 0; }
+  .mastery-label {
+    font-size: 0.7rem;
+    color: var(--green-light);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+  }
+  .mastery-name {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--green-dark);
+    margin: 2px 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .mastery-bar {
+    height: 12px;
+    background: var(--beige-soft);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .mastery-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 6px;
+    background: var(--gold);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;
+  }
+  .mastery-score {
+    font-size: 0.85rem;
+    color: var(--green-mid);
+    font-family: "SF Mono", Monaco, monospace;
+  }
+  .mastery-reset {
+    flex-shrink: 0;
+    font-size: 0.82rem;
+    padding: 9px 16px;
+    background: transparent;
+    color: var(--green-dark);
+    border: 2px solid var(--green-dark);
+    align-self: center;
+  }
+  .mastery-reset:hover {
+    background: var(--green-dark);
+    color: var(--white);
+  }
+  @media (max-width: 600px) {
+    .mastery-reset { width: 100%; margin-top: 8px; }
+  }
+
+  /* Pastille score badge at bottom */
+  .pastille { padding-bottom: 38px; }
+  .pastille-score {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    color: var(--green-light);
+    background: var(--beige);
+    padding: 3px 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  .pastille-score.has-score {
+    color: var(--green-dark);
+    background: var(--gold-soft);
+  }
+  .pastille-score.perfect {
+    color: var(--white);
+    background: var(--gold);
+  }
+
+  /* ===== GAME 4 — Québec Vrai/Faux ===== */
+  .qbq-map-wrap {
+    margin-bottom: 14px;
+    background: #F5F2E8;
+    border-radius: 12px;
+    padding: 8px 6px 4px;
+    border: 1px solid rgba(47,79,74,0.08);
+  }
+  .qbq-map { width: 100%; height: auto; max-height: 140px; display: block; }
+  .qbq-map .city circle { transition: fill 0.4s, opacity 0.4s; }
+  .qbq-map .city text { transition: opacity 0.4s; }
+  .qbq-map .city.lit circle.dot { fill: #C9A961; opacity: 1; }
+  .qbq-map .city.lit text { opacity: 1 !important; }
+  .qbq-map .city.lit .halo { stroke: #C9A961; opacity: 0.7; animation: city-pulse 2s ease-in-out infinite; }
+  @keyframes city-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 0.2; }
+  }
+
+  .qbq-affirmation-card {
+    background: var(--beige);
+    border-radius: 16px;
+    padding: 26px 24px;
+    text-align: center;
+    margin-bottom: 16px;
+    border-left: 4px solid #003D7A;
+  }
+  .qbq-icon { font-size: 2.4rem; margin-bottom: 10px; line-height: 1; }
+  .qbq-affirmation {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    line-height: 1.5;
+    font-style: italic;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  .qbq-prompt {
+    text-align: center;
+    font-size: 0.92rem;
+    color: var(--green-mid);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .qbq-choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .qbq-choice {
+    border: 3px solid;
+    background: var(--white);
+    padding: 22px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--green-dark);
+    transition: all 0.18s;
+    font-family: inherit;
+  }
+  .qbq-choice:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(47,79,74,0.15);
+  }
+  .qbq-choice:disabled { cursor: default; opacity: 0.45; }
+  .qbq-choice.vrai { border-color: #0F6E56; color: #0F6E56; }
+  .qbq-choice.vrai:hover:not(:disabled) { background: #0F6E56; color: white; }
+  .qbq-choice.faux { border-color: #C75545; color: #C75545; }
+  .qbq-choice.faux:hover:not(:disabled) { background: #C75545; color: white; }
+
+  .qbq-choice.is-correct {
+    background: #0F6E56 !important;
+    border-color: #0F6E56 !important;
+    color: white !important;
+    opacity: 1 !important;
+  }
+  .qbq-choice.is-wrong {
+    background: #C75545 !important;
+    border-color: #C75545 !important;
+    color: white !important;
+    opacity: 1 !important;
+  }
+
+  .qbq-pour-aller-loin {
+    background: var(--beige);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-top: 14px;
+    border-left: 4px solid var(--gold);
+  }
+  .qbq-pour-aller-loin h5 {
+    color: var(--green-dark);
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .qbq-pour-aller-loin .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+  }
+  .qbq-pour-aller-loin .link-item {
+    text-align: center;
+  }
+  .qbq-pour-aller-loin .link-item .name {
+    font-weight: 700;
+    color: var(--green-dark);
+    font-size: 0.95rem;
+  }
+  .qbq-pour-aller-loin .link-item .place {
+    font-size: 0.78rem;
+    color: var(--green-light);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ============ PASSWORD GATE ============ -->
+  <div id="screen-gate" class="screen active">
+    <div class="gate">
+      <div class="gate-card">
+        <div class="gate-cat" id="gate-cat-svg"></div>
+        <h2>Accès protégé</h2>
+        <p>Entre le mot de passe pour accéder à l'expérience.</p>
+        <input type="password" id="gate-input" class="gate-input" placeholder="Mot de passe (indice : ronron)" autofocus>
+        <div class="gate-error" id="gate-error"></div>
+        <button onclick="checkPassword()">Entrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MENU ============ -->
+  <div id="screen-menu" class="screen">
+    <h1>Le quantique, par l'expérience</h1>
+    <p class="subtitle">Quatre thèmes, quatre jeux. Choisis-en un pour commencer.</p>
+
+    <div class="mastery-card" id="mastery-card"></div>
+
+    <div class="menu-grid">
+      <div class="pastille" onclick="openGame('classique-vs-quantique')">
+        <span class="badge-status ready">Prêt</span>
+        <div class="circle" id="pastille-cat-1"></div>
+        <h3>Informatique classique vs quantique</h3>
+        <p>5 paires d'images — repère celle qui représente le quantique.</p>
+        <div class="pastille-score" id="ps-cvq">Pas encore joué</div>
+      </div>
+
+      <div class="pastille" onclick="openGame('applications')">
+        <span class="badge-status ready">Prêt</span>
+        <div class="circle" id="pastille-cat-2"></div>
+        <h3>Les applications du quantique</h3>
+        <p>5 situations à classer entre quantique, hybride et classique.</p>
+        <div class="pastille-score" id="ps-app">Pas encore joué</div>
+      </div>
+
+      <div class="pastille" onclick="openGame('risques')">
+        <span class="badge-status ready">Prêt</span>
+        <div class="circle" id="pastille-cat-3"></div>
+        <h3>Risques stratégiques</h3>
+        <p>5 risques à placer sur la frise temporelle.</p>
+        <div class="pastille-score" id="ps-rsq">Pas encore joué</div>
+      </div>
+
+      <div class="pastille" onclick="openGame('quebec')">
+        <span class="badge-status ready">Prêt</span>
+        <div class="circle" id="pastille-cat-4"></div>
+        <h3>Le quantique au Québec</h3>
+        <p>5 affirmations Vrai/Faux sur l'écosystème québécois.</p>
+        <div class="pastille-score" id="ps-qbq">Pas encore joué</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ GAME SCREEN ============ -->
+  <div id="screen-game" class="screen">
+    <div class="game-header">
+      <button class="back-btn" onclick="backToMenu()">← Retour au menu</button>
+      <h1 id="game-title">Titre du jeu</h1>
+      <div style="width:140px"></div>
+    </div>
+
+    <div class="split-layout">
+      <div class="game-area" id="game-area">
+
+        <!-- ===== GAME 1 — QUIZ ===== -->
+        <div id="game-classique-vs-quantique" class="game-stage">
+          <div class="cvq-progress" id="cvq-progress">
+            <div class="step active" data-seq="1">1</div>
+            <div class="bar"></div>
+            <div class="step" data-seq="2">2</div>
+            <div class="bar"></div>
+            <div class="step" data-seq="3">3</div>
+            <div class="bar"></div>
+            <div class="step" data-seq="4">4</div>
+            <div class="bar"></div>
+            <div class="step" data-seq="5">5</div>
+            <div class="bar"></div>
+            <div class="step" data-seq="6">★</div>
+          </div>
+
+          <div id="cvq-stage"></div>
+
+          <div class="cvq-nav">
+            <button id="cvq-next" onclick="cvqNext()" disabled>Question suivante →</button>
+          </div>
+        </div>
+
+        <!-- ===== GAME 2 — APPLICATIONS QUIZ ===== -->
+        <div id="game-applications" class="game-stage">
+          <div class="apq-mascot" id="apq-cat"></div>
+          <div class="apq-header" id="apq-header" style="display:none;">
+            <div class="stat-block">
+              <div class="label">Question</div>
+              <div class="value" id="apq-counter">— / 5</div>
+            </div>
+            <div class="stat-block" style="text-align:right;">
+              <div class="label">Score</div>
+              <div class="value" id="apq-score">0</div>
+            </div>
+          </div>
+          <div id="apq-stage"></div>
+          <div class="cvq-nav" id="apq-nav">
+            <button id="apq-next" onclick="appNext()">Commencer →</button>
+          </div>
+        </div>
+
+        <!-- ===== GAME 3 — RISQUES TIMELINE ===== -->
+        <div id="game-risques" class="game-stage">
+          <div class="rsq-mascot" id="rsq-cat"></div>
+          <div class="apq-header" id="rsq-header" style="display:none;">
+            <div class="stat-block">
+              <div class="label">Carte</div>
+              <div class="value" id="rsq-counter">— / 5</div>
+            </div>
+            <div class="stat-block" style="text-align:right;">
+              <div class="label">Score</div>
+              <div class="value" id="rsq-score">0</div>
+            </div>
+          </div>
+          <div id="rsq-stage"></div>
+          <div class="cvq-nav" id="rsq-nav">
+            <button id="rsq-next" onclick="rsqNext()">Commencer →</button>
+          </div>
+        </div>
+
+        <!-- ===== GAME 4 — QUÉBEC VRAI/FAUX ===== -->
+        <div id="game-quebec" class="game-stage">
+          <div class="rsq-mascot" id="qbq-cat"></div>
+          <div class="qbq-map-wrap" id="qbq-map-wrap" style="display:none;">
+            <svg viewBox="0 0 360 130" class="qbq-map" id="qbq-map">
+              <path d="M 5 26 Q 80 12, 160 22 T 355 14" stroke="#7FA8B5" stroke-width="3" fill="none" opacity="0.45"/>
+              <text x="40" y="11" font-size="8" fill="#5A7570" font-style="italic">Saint-Laurent</text>
+              <line x1="100" y1="42" x2="170" y2="62" stroke="#D5D1C4" stroke-width="1.5" stroke-dasharray="3,3"/>
+              <line x1="170" y1="62" x2="260" y2="74" stroke="#D5D1C4" stroke-width="1.5" stroke-dasharray="3,3"/>
+              <g class="city" data-city="montreal">
+                <circle cx="100" cy="42" r="14" fill="none" stroke="#888" stroke-width="2" opacity="0.3" class="halo"/>
+                <circle cx="100" cy="42" r="9" fill="#888" opacity="0.45" class="dot"/>
+                <text x="100" y="64" text-anchor="middle" font-size="12" font-weight="700" fill="#2F4F4A" opacity="0.55">Montréal</text>
+                <text x="100" y="78" text-anchor="middle" font-size="9" fill="#5A7570" opacity="0.55">MonarQ · ÉTS</text>
+              </g>
+              <g class="city" data-city="bromont">
+                <circle cx="170" cy="62" r="13" fill="none" stroke="#888" stroke-width="2" opacity="0.3" class="halo"/>
+                <circle cx="170" cy="62" r="8" fill="#888" opacity="0.45" class="dot"/>
+                <text x="170" y="84" text-anchor="middle" font-size="12" font-weight="700" fill="#2F4F4A" opacity="0.55">Bromont</text>
+                <text x="170" y="98" text-anchor="middle" font-size="9" fill="#5A7570" opacity="0.55">IBM · PINQ²</text>
+              </g>
+              <g class="city" data-city="sherbrooke">
+                <circle cx="260" cy="74" r="14" fill="none" stroke="#888" stroke-width="2" opacity="0.3" class="halo"/>
+                <circle cx="260" cy="74" r="9" fill="#888" opacity="0.45" class="dot"/>
+                <text x="260" y="96" text-anchor="middle" font-size="12" font-weight="700" fill="#2F4F4A" opacity="0.55">Sherbrooke</text>
+                <text x="260" y="110" text-anchor="middle" font-size="9" fill="#5A7570" opacity="0.55">DistriQ · Nord Quantique</text>
+              </g>
+            </svg>
+          </div>
+          <div class="apq-header" id="qbq-header" style="display:none;">
+            <div class="stat-block">
+              <div class="label">Affirmation</div>
+              <div class="value" id="qbq-counter">— / 5</div>
+            </div>
+            <div class="stat-block" style="text-align:right;">
+              <div class="label">Score</div>
+              <div class="value" id="qbq-score">0</div>
+            </div>
+          </div>
+          <div id="qbq-stage"></div>
+          <div class="cvq-nav" id="qbq-nav">
+            <button id="qbq-next" onclick="qbqNext()">Commencer →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-area">
+        <h3 id="video-title">Vidéo informative</h3>
+        <div class="video-frame" id="video-frame">
+          <span>Vidéo à venir</span>
+        </div>
+        <div class="video-caption" id="video-caption">
+          Une courte vidéo expliquera le principe en parallèle du jeu.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// SVG CAT BUILDER
+// ============================================================
+function makeCat(opts) {
+  const o = Object.assign({
+    state: 'awake',
+    color: '#2F4F4A',
+    size: 80,
+    classes: ''
+  }, opts || {});
+
+  let eyes;
+  if (o.state === 'sleeping') {
+    eyes = `<path d="M 33 50 Q 40 54 47 50" fill="none" stroke="#0d1f1c" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M 53 50 Q 60 54 67 50" fill="none" stroke="#0d1f1c" stroke-width="2.2" stroke-linecap="round"/>`;
+  } else if (o.state === 'happy' || o.state === 'purr') {
+    eyes = `<path d="M 33 50 Q 40 44 47 50" fill="none" stroke="#0d1f1c" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M 53 50 Q 60 44 67 50" fill="none" stroke="#0d1f1c" stroke-width="2.2" stroke-linecap="round"/>`;
+  } else {
+    eyes = `<circle cx="40" cy="49" r="3.5" fill="#0d1f1c"/>
+            <circle cx="60" cy="49" r="3.5" fill="#0d1f1c"/>
+            <circle cx="41" cy="48" r="1" fill="#fff"/>
+            <circle cx="61" cy="48" r="1" fill="#fff"/>`;
+  }
+
+  let mouth;
+  if (o.state === 'meow') {
+    mouth = `<ellipse cx="50" cy="64" rx="3" ry="4" fill="#0d1f1c"/>`;
+  } else if (o.state === 'happy' || o.state === 'purr') {
+    mouth = `<path d="M 43 62 Q 50 70 57 62" fill="none" stroke="#0d1f1c" stroke-width="2" stroke-linecap="round"/>`;
+  } else if (o.state === 'sleeping') {
+    mouth = `<path d="M 47 63 Q 50 65 53 63" fill="none" stroke="#0d1f1c" stroke-width="1.5" stroke-linecap="round"/>`;
+  } else {
+    mouth = `<path d="M 46 62 L 50 64 L 54 62" fill="none" stroke="#0d1f1c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>`;
+  }
+
+  const zzz = o.state === 'sleeping'
+    ? `<text x="68" y="22" font-size="11" font-weight="700" fill="#0d1f1c">Z</text>
+       <text x="76" y="14" font-size="8" font-weight="700" fill="#0d1f1c">z</text>`
+    : '';
+
+  return `
+    <svg viewBox="0 0 100 100" width="${o.size}" height="${o.size}" class="cat-svg ${o.classes}" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="22,32 30,8 42,32" fill="${o.color}"/>
+      <polygon points="58,32 70,8 78,32" fill="${o.color}"/>
+      <polygon points="28,28 30,16 36,28" fill="#E8D4A2" opacity="0.7"/>
+      <polygon points="64,28 70,16 72,28" fill="#E8D4A2" opacity="0.7"/>
+      <ellipse cx="50" cy="52" rx="30" ry="28" fill="${o.color}"/>
+      ${eyes}
+      <polygon points="47,55 53,55 50,59" fill="#1a3530"/>
+      ${mouth}
+      <line x1="22" y1="56" x2="36" y2="58" stroke="#0d1f1c" stroke-width="1" opacity="0.5"/>
+      <line x1="22" y1="61" x2="36" y2="61" stroke="#0d1f1c" stroke-width="1" opacity="0.5"/>
+      <line x1="64" y1="58" x2="78" y2="56" stroke="#0d1f1c" stroke-width="1" opacity="0.5"/>
+      <line x1="64" y1="61" x2="78" y2="61" stroke="#0d1f1c" stroke-width="1" opacity="0.5"/>
+      ${zzz}
+    </svg>
+  `;
+}
+
+function makeSuperposedCat(size) {
+  size = size || 80;
+  return `
+    <div class="superposed-cat" style="width:${size}px;height:${size}px;">
+      <div class="cat-layer cat-layer-1">${makeCat({state:'awake', size:size, color:'#2F4F4A'})}</div>
+      <div class="cat-layer cat-layer-2">${makeCat({state:'sleeping', size:size, color:'#3D6B62'})}</div>
+    </div>
+  `;
+}
+
+// Inject pastille cats / mascots on load
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('pastille-cat-1').innerHTML = makeCat({state:'awake', size:64, color:'#FFFFFF'});
+  document.getElementById('pastille-cat-2').innerHTML = makeCat({state:'happy', size:64, color:'#FFFFFF'});
+  document.getElementById('pastille-cat-3').innerHTML = makeCat({state:'awake', size:64, color:'#FFFFFF'});
+  document.getElementById('pastille-cat-4').innerHTML = makeCat({state:'happy', size:64, color:'#FFFFFF'});
+  document.getElementById('gate-cat-svg').innerHTML = makeCat({state:'awake', size:80});
+  const input = document.getElementById('gate-input');
+  if (input) input.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkPassword(); });
+});
+
+// ============================================================
+// PASSWORD GATE
+// ============================================================
+const PASSWORD = "miaou2026";
+function checkPassword() {
+  const input = document.getElementById('gate-input');
+  const err = document.getElementById('gate-error');
+  if (input.value === PASSWORD) {
+    showScreen('screen-menu');
+  } else {
+    err.textContent = "Ronron incorrect. Réessaie.";
+    input.value = '';
+    input.focus();
+  }
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id === 'screen-menu') refreshMastery();
+  window.scrollTo(0, 0);
+}
+
+// ============================================================
+// MASTERY — total progression across the 4 games
+// ============================================================
+const MAX_PER_GAME = 5;
+const MASTERY_KEYS = ['classique-vs-quantique', 'applications', 'risques', 'quebec'];
+const PASTILLE_IDS = {
+  'classique-vs-quantique': 'ps-cvq',
+  'applications': 'ps-app',
+  'risques': 'ps-rsq',
+  'quebec': 'ps-qbq'
+};
+const mastery = {
+  'classique-vs-quantique': null,
+  'applications': null,
+  'risques': null,
+  'quebec': null
+};
+
+function recordGameScore(key, score) {
+  // Keep the best score across replays
+  if (mastery[key] === null || score > mastery[key]) {
+    mastery[key] = score;
+  }
+}
+
+function resetMastery() {
+  MASTERY_KEYS.forEach(k => { mastery[k] = null; });
+  refreshMastery();
+}
+
+function getMasteryLevel(total) {
+  // total out of 20
+  if (total >= 18) return { name: "Chat d'or",        color: '#D4A93C', state: 'happy',    barColor: '#D4A93C' };
+  if (total >= 14) return { name: "Chat d'argent",    color: '#B8B8B8', state: 'happy',    barColor: '#B8B8B8' };
+  if (total >= 10) return { name: "Chat de bronze",   color: '#A57342', state: 'happy',    barColor: '#A57342' };
+  if (total >= 5)  return { name: "Chaton apprenti",  color: '#5A7570', state: 'awake',    barColor: '#5A7570' };
+  return                  { name: "Chaton novice",    color: '#888888', state: 'sleeping', barColor: '#888888' };
+}
+
+function refreshMastery() {
+  // Compute total
+  const playedScores = MASTERY_KEYS.map(k => mastery[k]);
+  const total = playedScores.reduce((sum, s) => sum + (s || 0), 0);
+  const max = MAX_PER_GAME * MASTERY_KEYS.length;
+  const playedCount = playedScores.filter(s => s !== null).length;
+  const pct = Math.round((total / max) * 100);
+  const level = getMasteryLevel(total);
+
+  // Render mastery card
+  const card = document.getElementById('mastery-card');
+  if (card) {
+    card.innerHTML = `
+      <div class="mastery-cat-wrap" style="border-color:${level.color}; background:${level.color}22;">
+        ${makeCat({state: level.state, size: 64, color: level.color})}
+      </div>
+      <div class="mastery-info">
+        <div class="mastery-label">Niveau de maîtrise</div>
+        <div class="mastery-name" style="color:${level.color === '#888888' ? 'var(--green-dark)' : level.color};">${level.name}</div>
+        <div class="mastery-bar"><div class="mastery-fill" style="width:${pct}%; background:${level.barColor};"></div></div>
+        <div class="mastery-score">${total} / ${max} points · ${playedCount}/4 jeux complétés</div>
+      </div>
+      <button class="mastery-reset" onclick="resetMastery()" title="Remettre tous les scores à zéro">↻ Nouveau joueur</button>
+    `;
+  }
+
+  // Update each pastille's score badge
+  MASTERY_KEYS.forEach(k => {
+    const el = document.getElementById(PASTILLE_IDS[k]);
+    if (!el) return;
+    const s = mastery[k];
+    if (s === null) {
+      el.textContent = "Pas encore joué";
+      el.className = 'pastille-score';
+    } else if (s === MAX_PER_GAME) {
+      el.textContent = "★ Sans-faute · 5/5";
+      el.className = 'pastille-score perfect';
+    } else {
+      el.textContent = "Meilleur : " + s + "/5";
+      el.className = 'pastille-score has-score';
+    }
+  });
+}
+
+const GAME_CONFIG = {
+  "classique-vs-quantique": {
+    title: "1 — Informatique classique vs quantique",
+    videoTitle: "Classique vs quantique",
+    videoCaption: "Le bit est un interrupteur (0 ou 1). Le qubit est une pièce qui tourne en l'air — 0 et 1 simultanément jusqu'à la mesure. Cette différence change tout.",
+    videoEmbed: null
+  },
+  "applications": {
+    title: "2 — Les applications du quantique",
+    videoTitle: "Où le quantique fait la différence",
+    videoCaption: "Pharma, finance, logistique, IA, matériaux, cryptographie : les domaines où le quantique apporte un vrai avantage — et ceux où c'est du battage.",
+    videoEmbed: null
+  },
+  "risques": {
+    title: "3 — Risques stratégiques",
+    videoTitle: "Les risques stratégiques du quantique",
+    videoCaption: "« Harvest now, decrypt later », retard concurrentiel, dépendance technologique : ce que les entreprises risquent en attendant trop.",
+    videoEmbed: null
+  },
+  "quebec": {
+    title: "4 — Le quantique au Québec",
+    videoTitle: "Le quantique au Québec",
+    videoCaption: "Sherbrooke, DistriQ, Bromont, IBM Quantum System One, PINQ² : un écosystème québécois en plein essor.",
+    videoEmbed: null
+  }
+};
+
+function openGame(key) {
+  const cfg = GAME_CONFIG[key];
+  document.getElementById('game-title').textContent = cfg.title;
+  document.getElementById('video-title').textContent = cfg.videoTitle;
+  document.getElementById('video-caption').textContent = cfg.videoCaption;
+
+  const frame = document.getElementById('video-frame');
+  frame.innerHTML = cfg.videoEmbed
+    ? `<iframe src="${cfg.videoEmbed}" allowfullscreen></iframe>`
+    : '<span>Vidéo à venir</span>';
+
+  document.querySelectorAll('.game-stage').forEach(s => s.classList.remove('active'));
+  document.getElementById('game-' + key).classList.add('active');
+
+  if (key === 'classique-vs-quantique') cvqStart();
+  if (key === 'applications') appStart();
+  if (key === 'risques') rsqStart();
+  if (key === 'quebec') qbqStart();
+
+  showScreen('screen-game');
+}
+
+function backToMenu() { showScreen('screen-menu'); }
+
+// ============================================================
+// GAME 1 — QUIZ "Quelle image représente le quantique ?"
+// ============================================================
+
+const MAZE = [
+  [0,0,1,1,0],
+  [0,0,0,1,0],
+  [1,1,0,0,0],
+  [0,0,0,1,0],
+  [0,1,1,0,0]
+];
+const MAZE_PATH = [[0,0],[1,0],[1,1],[1,2],[2,2],[2,3],[2,4],[3,4],[4,4]];
+
+const QUIZ = [
+  {
+    n: 1,
+    title: "Q1 — La boîte de Schrödinger",
+    question: "Quelle boîte représente un système <strong>quantique</strong> ?",
+    panels: { classical: 'q1Classical', quantum: 'q1Quantum' },
+    feedbackTitle: "La superposition",
+    feedbackHTML: `<p>Le qubit existe dans <strong>plusieurs états en même temps</strong>, jusqu'à la mesure. Le chat classique (à gauche dans la scène ci-dessus) a déjà un état déterminé — il est éveillé OU endormi. Le chat quantique est dans une <strong>superposition</strong> des deux états.</p><p>Ouvrir la boîte le force à « choisir » : c'est l'<em>effondrement de la fonction d'onde</em>.</p>`
+  },
+  {
+    n: 2,
+    title: "Q2 — Les chatons jumeaux",
+    question: "Quelle paire représente des qubits <strong>intriqués</strong> ?",
+    panels: { classical: 'q2Classical', quantum: 'q2Quantum' },
+    feedbackTitle: "L'intrication",
+    feedbackHTML: `<p>Deux qubits intriqués partagent un <strong>état unique</strong>. Mesurer l'un fixe instantanément l'état de l'autre, peu importe la distance qui les sépare.</p><p>Einstein appelait ça <em>« action fantôme à distance »</em> — il n'y a pourtant aucun signal qui voyage entre les deux.</p>`
+  },
+  {
+    n: 3,
+    title: "Q3 — Trouver le chat caché",
+    question: "Quelle recherche est <strong>quantique</strong> ?",
+    panels: { classical: 'q3Classical', quantum: 'q3Quantum' },
+    feedbackTitle: "L'algorithme de Grover",
+    feedbackHTML: `<p>Pour chercher dans N possibilités, le classique fait en moyenne ~N/2 essais. Le quantique exploite la <strong>superposition</strong> et l'<strong>interférence</strong> pour trouver en ~√N étapes.</p><p>C'est une accélération <em>quadratique</em>. Cherchant dans 1 million d'éléments : ~500 000 essais classiques contre ~1 000 quantiques.</p>`
+  },
+  {
+    n: 4,
+    title: "Q4 — Le labyrinthe",
+    question: "Quelle exploration est <strong>quantique</strong> ?",
+    panels: { classical: 'q4Classical', quantum: 'q4Quantum' },
+    feedbackTitle: "Le calcul parallèle",
+    feedbackHTML: `<p>Avec n qubits en superposition, on peut représenter <strong>2ⁿ états simultanément</strong>. C'est l'avantage exponentiel.</p><p>Avec 50 qubits, on a plus d'états que tous les atomes d'une planète. Avec 300 qubits, plus que tous les atomes de l'univers observable. <em>C'est ça le saut de nature, pas juste de vitesse.</em></p>`
+  },
+  {
+    n: 5,
+    title: "Q5 — Les conditions extrêmes",
+    question: "Dans quel environnement fonctionne un ordinateur <strong>quantique</strong> réel ?",
+    panels: { classical: 'q5Classical', quantum: 'q5Quantum' },
+    feedbackTitle: "Décohérence : la fragilité quantique",
+    feedbackHTML: `<p>Les ordinateurs quantiques fonctionnent à <strong>~15 millikelvins</strong> — plus froid que l'espace intergalactique. La moindre vibration, onde ou rayon perturbe les qubits : c'est la <em>décohérence</em>.</p><p>Cette fragilité explique pourquoi un ordinateur quantique tient dans un cryostat de 1,5 m de haut, alimenté à l'hélium-3 et hélium-4 — et non sur ton bureau.</p>`
+  }
+];
+
+const cvq = {
+  current: 0,
+  mode: 'choice',
+  score: 0,
+  answers: [],
+  positions: []
+};
+
+function cvqStart() {
+  cvq.current = 0;
+  cvq.mode = 'choice';
+  cvq.score = 0;
+  cvq.answers = [];
+  cvq.positions = QUIZ.map(() => Math.random() < 0.5 ? 'left-q' : 'right-q');
+  cvqRender();
+}
+
+function cvqRender() {
+  const stage = document.getElementById('cvq-stage');
+  const next = document.getElementById('cvq-next');
+
+  // Update progress bar
+  document.querySelectorAll('#cvq-progress .step').forEach((el, i) => {
+    el.classList.remove('active', 'done');
+    if (i === cvq.current) el.classList.add('active');
+    else if (i < cvq.current) el.classList.add('done');
+  });
+  document.querySelectorAll('#cvq-progress .bar').forEach((el, i) => {
+    el.classList.toggle('done', i < cvq.current);
+  });
+
+  if (cvq.current >= QUIZ.length) {
+    // Recap
+    recordGameScore('classique-vs-quantique', cvq.score);
+    stage.innerHTML = renderRecap();
+    next.textContent = 'Retour au menu';
+    next.disabled = false;
+    return;
+  }
+
+  const q = QUIZ[cvq.current];
+  const pos = cvq.positions[cvq.current];
+  const leftIsQ = pos === 'left-q';
+  const leftHTML = leftIsQ ? PANELS[q.panels.quantum]() : PANELS[q.panels.classical]();
+  const rightHTML = leftIsQ ? PANELS[q.panels.classical]() : PANELS[q.panels.quantum]();
+  const leftType = leftIsQ ? 'quantum' : 'classical';
+  const rightType = leftIsQ ? 'classical' : 'quantum';
+
+  let header = `
+    <div class="cvq-question-header">
+      <div class="cvq-mascot">${makeCat({state: cvq.mode === 'choice' ? 'awake' : (cvq.answers[cvq.current] ? 'happy' : 'awake'), size: 60})}</div>
+      <div class="cvq-q-title-block">
+        <h3>${q.title}</h3>
+        <p>${q.question}</p>
+      </div>
+      <div class="cvq-score-box">
+        <div class="label">Score</div>
+        <div class="score">${cvq.score}/${QUIZ.length}</div>
+      </div>
+    </div>
+  `;
+
+  if (cvq.mode === 'choice') {
+    stage.innerHTML = header + `
+      <div class="cvq-choice-grid">
+        <div class="cvq-choice" onclick="cvqChoose('left')">
+          <div class="stage-area-mini">${leftHTML}</div>
+          <span class="check-icon"></span>
+        </div>
+        <div class="cvq-choice" onclick="cvqChoose('right')">
+          <div class="stage-area-mini">${rightHTML}</div>
+          <span class="check-icon"></span>
+        </div>
+      </div>
+      <p class="cvq-hint">Clique sur l'image qui te semble représenter le quantique.</p>
+    `;
+    next.disabled = true;
+    next.textContent = cvq.current === QUIZ.length - 1 ? 'Voir le récap →' : 'Question suivante →';
+  } else {
+    // Feedback mode
+    const correctChoice = leftIsQ ? 'left' : 'right';
+    const userChoice = cvq.answers[cvq.current];
+    const isCorrect = userChoice === correctChoice;
+
+    stage.innerHTML = header + `
+      <div class="cvq-result-banner ${isCorrect ? 'correct' : 'wrong'}">
+        ${isCorrect ? '✓ Bonne réponse — c\'est bien ça le quantique !' : '✗ Pas tout à fait — voyons pourquoi.'}
+      </div>
+      <div class="cvq-choice-grid">
+        <div class="cvq-choice locked ${leftType === 'quantum' ? 'correct' : (userChoice === 'left' ? 'wrong' : '')}">
+          <div class="stage-area-mini">${leftHTML}</div>
+          <div class="panel-tag">${leftType === 'quantum' ? 'Quantique' : 'Classique'}</div>
+          <span class="check-icon">${leftType === 'quantum' ? '✓' : (userChoice === 'left' ? '✗' : '')}</span>
+        </div>
+        <div class="cvq-choice locked ${rightType === 'quantum' ? 'correct' : (userChoice === 'right' ? 'wrong' : '')}">
+          <div class="stage-area-mini">${rightHTML}</div>
+          <div class="panel-tag">${rightType === 'quantum' ? 'Quantique' : 'Classique'}</div>
+          <span class="check-icon">${rightType === 'quantum' ? '✓' : (userChoice === 'right' ? '✗' : '')}</span>
+        </div>
+      </div>
+      <div class="speaker-bubble">
+        <div class="speaker-avatar">${makeCat({state: isCorrect ? 'happy' : 'awake', size: 64})}</div>
+        <div class="cvq-feedback-card">
+          <h4>${q.feedbackTitle}</h4>
+          ${q.feedbackHTML}
+        </div>
+      </div>
+    `;
+    next.disabled = false;
+    next.textContent = cvq.current === QUIZ.length - 1 ? 'Voir le récap →' : 'Question suivante →';
+  }
+}
+
+function cvqChoose(side) {
+  if (cvq.mode !== 'choice') return;
+  const q = QUIZ[cvq.current];
+  const pos = cvq.positions[cvq.current];
+  const correctChoice = pos === 'left-q' ? 'left' : 'right';
+  cvq.answers[cvq.current] = side;
+  if (side === correctChoice) cvq.score++;
+  cvq.mode = 'feedback';
+  cvqRender();
+}
+
+function cvqNext() {
+  if (cvq.current >= QUIZ.length) {
+    backToMenu();
+    return;
+  }
+  if (cvq.mode === 'feedback') {
+    cvq.current++;
+    cvq.mode = 'choice';
+    cvqRender();
+  }
+}
+
+// ============================================================
+// PANEL RENDERERS — visualisations comparatives
+// ============================================================
+const PANELS = {
+  // ----- Q1 — boxes -----
+  q1Classical: () => `
+    <div class="cat-box">
+      ${makeCat({state: 'sleeping', size: 90})}
+      <div class="lid"></div>
+    </div>
+  `,
+  q1Quantum: () => `
+    <div class="cat-box">
+      ${makeSuperposedCat(90)}
+      <div class="lid"></div>
+    </div>
+  `,
+
+  // ----- Q2 — twin cats -----
+  q2Classical: () => `
+    <div class="twin-cats">
+      <div class="twin-cat bobbing" style="animation-delay: 0s;">${makeCat({state: 'awake', size: 64})}</div>
+      <div class="twin-cat" style="margin-left: 8px;">${makeCat({state: 'awake', size: 64})}</div>
+    </div>
+  `,
+  q2Quantum: () => `
+    <div class="twin-cats entangled">
+      <div class="entangle-line"></div>
+      <div class="twin-cat bobbing-pair" style="animation-delay: 0s;">${makeCat({state: 'happy', size: 64})}</div>
+      <div class="twin-cat bobbing-pair" style="animation-delay: 0s;">${makeCat({state: 'happy', size: 64})}</div>
+    </div>
+  `,
+
+  // ----- Q3 — house search -----
+  q3Classical: () => {
+    let html = '<div class="house-grid">';
+    for (let i = 0; i < 8; i++) {
+      let cls = '';
+      if (i < 3) cls = 'classical-checked';
+      else if (i === 3) cls = 'classical-active';
+      html += `<div class="house ${cls}"><div class="house-roof"></div></div>`;
+    }
+    html += '</div>';
+    return html;
+  },
+  q3Quantum: () => {
+    let html = '<div class="house-grid">';
+    for (let i = 0; i < 8; i++) {
+      html += `<div class="house all-flash" style="animation-delay:${i * 0.1}s;"><div class="house-roof"></div></div>`;
+    }
+    html += '</div>';
+    return html;
+  },
+
+  // ----- Q4 — maze -----
+  q4Classical: () => {
+    let html = '<div class="maze">';
+    const partialPath = MAZE_PATH.slice(0, 5);
+    const isInPath = (r, c) => partialPath.some(([pr, pc]) => pr === r && pc === c);
+    for (let r = 0; r < 5; r++) {
+      for (let c = 0; c < 5; c++) {
+        let cls = 'maze-cell';
+        if (MAZE[r][c] === 1) cls += ' wall';
+        else if (isInPath(r, c)) cls += ' classical-path';
+        if (r === 0 && c === 0) cls += ' start';
+        if (r === 4 && c === 4) cls += ' end';
+        if (r === 2 && c === 2) cls += ' cat-here';
+        html += `<div class="${cls}"></div>`;
+      }
+    }
+    html += '</div>';
+    return html;
+  },
+  q4Quantum: () => {
+    let html = '<div class="maze">';
+    let delayIdx = 0;
+    for (let r = 0; r < 5; r++) {
+      for (let c = 0; c < 5; c++) {
+        let cls = 'maze-cell';
+        if (MAZE[r][c] === 1) cls += ' wall';
+        else cls += ' all-lit';
+        if (r === 0 && c === 0) cls += ' start';
+        if (r === 4 && c === 4) cls += ' end cat-here';
+        const delay = MAZE[r][c] === 0 ? `style="animation-delay:${delayIdx * 0.08}s;"` : '';
+        if (MAZE[r][c] === 0) delayIdx++;
+        html += `<div class="${cls}" ${delay}></div>`;
+      }
+    }
+    html += '</div>';
+    return html;
+  },
+
+  // ----- Q5 — environment (decoherence) -----
+  q5Classical: () => `
+    <div class="env-box warm">
+      <div class="env-temp-top">☀️ 20 °C</div>
+      ${makeCat({state: 'awake', size: 80})}
+      <div class="env-label">Conditions ambiantes</div>
+    </div>
+  `,
+  q5Quantum: () => `
+    <div class="env-box cold">
+      <div class="env-temp-top">❄️ 15 mK</div>
+      ${makeCat({state: 'awake', size: 80})}
+      <div class="env-label">Cryostat isolé</div>
+      <span class="snow snow-l">❄️</span>
+      <span class="snow snow-r">❄️</span>
+    </div>
+  `
+};
+
+// ============================================================
+// RECAP
+// ============================================================
+function renderRecap() {
+  const total = QUIZ.length;
+  const score = cvq.score;
+  const verdict = score === total ? "Sans-faute ! Tu maîtrises l'intuition quantique."
+                : score >= 4 ? "Très bien ! Les principes fondamentaux sont là."
+                : score >= 3 ? "Pas mal — quelques relectures et tu y es."
+                : "Le quantique demande un peu de pratique. Les explications restent dans tes notes !";
+  return `
+    <div style="text-align:center; position:relative; min-height: 120px;">
+      <div class="dancing-cat">${makeCat({state:'happy', size:100})}</div>
+      <span class="heart" style="left:30%; top:20px; animation-delay: 0s;">♥</span>
+      <span class="heart" style="left:50%; top:30px; animation-delay: 0.5s;">♥</span>
+      <span class="heart" style="left:70%; top:25px; animation-delay: 1s;">♥</span>
+    </div>
+    <div class="recap-summary">
+      <p>Score final</p>
+      <div class="big">${score} / ${total}</div>
+      <p>${verdict}</p>
+    </div>
+    <div class="recap-grid">
+      <div class="recap-card">
+        <h5>1. Superposition</h5>
+        <p>Le qubit est dans plusieurs états à la fois — jusqu'à la mesure.</p>
+      </div>
+      <div class="recap-card">
+        <h5>2. Intrication</h5>
+        <p>Deux qubits intriqués réagissent ensemble, à toute distance.</p>
+      </div>
+      <div class="recap-card">
+        <h5>3. Recherche (Grover)</h5>
+        <p>Trouver une aiguille dans une botte de foin en √N essais au lieu de N.</p>
+      </div>
+      <div class="recap-card">
+        <h5>4. Calcul parallèle</h5>
+        <p>Avec n qubits, on explore 2ⁿ états en simultané — c'est exponentiel.</p>
+      </div>
+    </div>
+    <div class="recap-card" style="border-left-color:var(--gold);">
+      <h5 style="color:var(--green-dark);">À retenir</h5>
+      <p>Le quantique n'est <em>pas</em> juste « plus rapide ». C'est une <strong>autre façon de calculer</strong>, qui change la nature des problèmes qu'on peut résoudre.</p>
+    </div>
+  `;
+}
+
+// ============================================================
+// GAME 2 — APPLICATIONS QUIZ ("Quantique, Hybride ou Classique?")
+// ============================================================
+
+const APP_QUIZ = [
+  { id: 1, category: 'quantique', icon: '🔓',
+    situation: "Casser un chiffrement RSA-2048",
+    explanation: "Avantage <strong>exponentiel</strong> grâce à l'algorithme de Shor (1994). C'est précisément ce qui rend la cryptographie post-quantique urgente.",
+    reference: "Algorithme de Shor — 1994" },
+  { id: 9, category: 'classique', icon: '✉️',
+    situation: "Envoyer un courriel",
+    explanation: "Tâche séquentielle simple. Aucun bénéfice quantique. Un ordinateur classique fait ça parfaitement en quelques millisecondes.",
+    reference: "Protocoles SMTP/IMAP — classique standard" },
+  { id: 5, category: 'hybride', icon: '🤖',
+    situation: "Entraîner un grand modèle d'IA (type ChatGPT)",
+    explanation: "Débat actif. Quelques sous-tâches (algèbre linéaire, échantillonnage) <em>pourraient</em> bénéficier du quantique, mais l'entraînement reste majoritairement classique aujourd'hui.",
+    reference: "Quantum Machine Learning — recherche en cours" },
+  { id: 2, category: 'quantique', icon: '🧬',
+    situation: "Simuler une molécule complexe pour un nouveau médicament",
+    explanation: "Les molécules obéissent aux lois de la mécanique quantique. Un ordinateur quantique les simule <strong>nativement</strong>, là où le classique doit approximer. C'est un avantage de nature, pas seulement de vitesse.",
+    reference: "IBM + Moderna · Amgen + Quantinuum" },
+  { id: 11, category: 'classique', icon: '🌐',
+    situation: "Afficher cette page web dans un navigateur",
+    explanation: "Ironique mais vrai : un ordinateur quantique serait <em>moins</em> efficace. Le rendu graphique est massivement parallèle sur GPU classique, déjà optimal.",
+    reference: "Moteurs de rendu HTML/CSS — classiques" }
+];
+
+const appq = {
+  current: 0,
+  mode: 'intro',  // 'intro' | 'choice' | 'feedback' | 'final'
+  score: 0,
+  answers: []
+};
+
+function appStart() {
+  appq.current = 0;
+  appq.mode = 'intro';
+  appq.score = 0;
+  appq.answers = [];
+  appRender();
+}
+
+function appRender() {
+  const stage = document.getElementById('apq-stage');
+  const next = document.getElementById('apq-next');
+  const header = document.getElementById('apq-header');
+  const counter = document.getElementById('apq-counter');
+  const score = document.getElementById('apq-score');
+  const catEl = document.getElementById('apq-cat');
+
+  if (appq.mode === 'intro') {
+    header.style.display = 'none';
+    catEl.innerHTML = makeCat({state: 'awake', size: 60});
+    stage.innerHTML = `
+      <div class="apq-intro-card">
+        <div class="big-emoji">🐱</div>
+        <h3>Quantique, Hybride ou Classique ?</h3>
+        <p class="lead">5 situations. À toi de juger où le quantique fait vraiment la différence.</p>
+        <p class="helper">Le quantique n'est pas universellement meilleur. Sauras-tu repérer où il brille — et où il est inutile ?</p>
+      </div>
+    `;
+    next.disabled = false;
+    next.textContent = 'Commencer →';
+    return;
+  }
+
+  if (appq.mode === 'final') {
+    recordGameScore('applications', appq.score);
+    header.style.display = 'flex';
+    counter.textContent = APP_QUIZ.length + ' / ' + APP_QUIZ.length;
+    score.textContent = appq.score + ' / ' + APP_QUIZ.length;
+
+    const s = appq.score;
+    let msg, catState;
+    if (s === 5) {
+      msg = "<strong>Sans-faute !</strong> Tu as parfaitement saisi : le quantique transforme certains problèmes, pas tous.";
+      catState = 'happy';
+    } else if (s >= 4) {
+      msg = "<strong>Bon score.</strong> Le quantique brille sur les problèmes à complexité exponentielle ou de nature quantique.";
+      catState = 'happy';
+    } else if (s >= 2) {
+      msg = "<strong>À revoir.</strong> Retiens : Quantique = problèmes exponentiels (cryptographie, optimisation, chimie). Classique = tâches courantes.";
+      catState = 'awake';
+    } else {
+      msg = "Le mythe du « quantique meilleur partout » est tenace. Le vrai apport est <strong>ciblé</strong>.";
+      catState = 'sleeping';
+    }
+
+    catEl.innerHTML = makeCat({state: catState, size: 60});
+    const showHearts = s === 5;
+    const showDance = s >= 4;
+    stage.innerHTML = `
+      <div class="apq-final">
+        <div style="position:relative; min-height:120px;">
+          <div class="${showDance ? 'dancing-cat' : ''}" style="margin: 6px auto 0;">${makeCat({state: catState, size: 100})}</div>
+          ${showHearts ? '<span class="heart" style="left:30%; top:20px; animation-delay: 0s;">♥</span><span class="heart" style="left:50%; top:30px; animation-delay: 0.5s;">♥</span><span class="heart" style="left:70%; top:25px; animation-delay: 1s;">♥</span>' : ''}
+        </div>
+        <div class="apq-final-score">${s} / ${APP_QUIZ.length}</div>
+        <div class="apq-final-msg">${msg}</div>
+      </div>
+    `;
+    next.disabled = false;
+    next.textContent = 'Recommencer';
+    return;
+  }
+
+  // choice or feedback
+  header.style.display = 'flex';
+  counter.textContent = (appq.current + 1) + ' / ' + APP_QUIZ.length;
+  score.textContent = appq.score;
+
+  const q = APP_QUIZ[appq.current];
+  const userAnswer = appq.answers[appq.current];
+  const isCorrect = userAnswer === q.category;
+
+  if (appq.mode === 'choice') {
+    catEl.innerHTML = makeCat({state: 'awake', size: 60});
+    stage.innerHTML = `
+      <div class="apq-question-card">
+        <div class="apq-icon">${q.icon}</div>
+        <div class="apq-situation">${q.situation}</div>
+      </div>
+      <p class="apq-prompt">Cette tâche bénéficie-t-elle d'un ordinateur quantique ?</p>
+      <div class="apq-choices">
+        <button class="apq-choice quantique" onclick="appChoose('quantique')"><span class="badge-dot"></span>Quantique</button>
+        <button class="apq-choice hybride" onclick="appChoose('hybride')"><span class="badge-dot"></span>Hybride</button>
+        <button class="apq-choice classique" onclick="appChoose('classique')"><span class="badge-dot"></span>Classique</button>
+      </div>
+    `;
+    next.disabled = true;
+    next.textContent = appq.current === APP_QUIZ.length - 1 ? 'Voir le score →' : 'Suivant →';
+    return;
+  }
+
+  // feedback
+  catEl.innerHTML = makeCat({state: isCorrect ? 'happy' : 'sleeping', size: 60});
+  const cats = ['quantique', 'hybride', 'classique'];
+  const labels = { quantique: 'Quantique', hybride: 'Hybride', classique: 'Classique' };
+  const choicesHTML = cats.map(c => {
+    let cls = c;
+    if (c === q.category) cls += ' is-correct';
+    else if (c === userAnswer) cls += ' is-wrong';
+    return `<button class="apq-choice ${cls}" disabled><span class="badge-dot"></span>${labels[c]}</button>`;
+  }).join('');
+
+  stage.innerHTML = `
+    <div class="apq-question-card">
+      <div class="apq-icon">${q.icon}</div>
+      <div class="apq-situation">${q.situation}</div>
+    </div>
+    <div class="apq-result ${isCorrect ? 'correct' : 'wrong'}">
+      ${isCorrect ? '✓ Bonne réponse !' : '✗ Pas la bonne catégorie'}
+    </div>
+    <div class="apq-choices">${choicesHTML}</div>
+    <div class="speaker-bubble">
+      <div class="speaker-avatar">${makeCat({state: isCorrect ? 'happy' : 'awake', size: 64})}</div>
+      <div class="apq-explanation">
+        <h4>Pourquoi ?</h4>
+        <p>${q.explanation}</p>
+        <p class="ref">→ ${q.reference}</p>
+      </div>
+    </div>
+  `;
+  next.disabled = false;
+  next.textContent = appq.current === APP_QUIZ.length - 1 ? 'Voir le score →' : 'Suivant →';
+}
+
+function appChoose(category) {
+  if (appq.mode !== 'choice') return;
+  appq.answers[appq.current] = category;
+  if (category === APP_QUIZ[appq.current].category) appq.score++;
+  appq.mode = 'feedback';
+  appRender();
+}
+
+function appNext() {
+  if (appq.mode === 'intro') {
+    appq.mode = 'choice';
+    appRender();
+    return;
+  }
+  if (appq.mode === 'final') {
+    appStart();
+    return;
+  }
+  if (appq.mode === 'feedback') {
+    if (appq.current === APP_QUIZ.length - 1) {
+      appq.mode = 'final';
+    } else {
+      appq.current++;
+      appq.mode = 'choice';
+    }
+    appRender();
+  }
+}
+
+// ============================================================
+// GAME 3 — RISQUES TIMELINE ("Quand faut-il s'inquiéter ?")
+// ============================================================
+
+const RSQ_CARDS = [
+  { id: 1, category: 'maintenant', icon: '📧',
+    situation: "« Vos courriels sensibles d'aujourd'hui pourraient être lus dans 10 ans »",
+    explanation: "Des cybercriminels collectent <strong>dès maintenant</strong> les données chiffrées en pariant sur le futur. C'est ce qu'on appelle <em>« voler maintenant, déchiffrer plus tard »</em>.",
+    reference: "Harvest now, decrypt later — déjà documenté" },
+  { id: 10, category: 'faux', icon: '🥖',
+    situation: "« Un ordinateur quantique va pirater votre boulangerie demain matin »",
+    explanation: "Faux. Les ordinateurs quantiques actuels sont <strong>fragiles, rares et coûtent des dizaines de millions</strong>. Personne ne les utilisera pour cibler une PME directement.",
+    reference: "Réalité du marché 2026" },
+  { id: 5, category: 'bientot', icon: '💊',
+    situation: "« Un concurrent pharmaceutique sort un médicament 5 ans avant vous »",
+    explanation: "Pfizer, Biogen, Moderna utilisent déjà des algorithmes quantiques pour la recherche de médicaments. <strong>L'écart se creuse</strong>.",
+    reference: "IBM + Moderna · McKinsey 2025" },
+  { id: 7, category: 'plus-tard', icon: '🏦',
+    situation: "« Un ordinateur quantique parvient à casser le chiffrement bancaire actuel »",
+    explanation: "C'est ce qu'on appelle le <strong>« Q-Day »</strong>. Estimé entre <strong>2030 et 2035</strong> par la majorité des experts.",
+    reference: "Global Risk Institute — Quantum Threat Timeline" },
+  { id: 2, category: 'maintenant', icon: '🛡️',
+    situation: "« Une PME canadienne a 2 chances sur 3 de subir une cyberattaque cette année »",
+    explanation: "<strong>72 % des PME canadiennes</strong> ont été attaquées en 2023. Le quantique va amplifier cet écart en cassant le chiffrement actuel.",
+    reference: "KPMG Canada — Cybersécurité PME 2023" }
+];
+
+const RSQ_LABELS = {
+  'maintenant': { name: 'Maintenant', desc: 'Risque actif', emoji: '🔴' },
+  'bientot': { name: 'Bientôt', desc: '3-7 ans', emoji: '🟠' },
+  'plus-tard': { name: 'Plus tard', desc: '5-10 ans', emoji: '🔵' },
+  'faux': { name: 'Faux risque', desc: 'C\'est un mythe', emoji: '⚪' }
+};
+
+const rsq = {
+  current: 0,
+  mode: 'intro',
+  score: 0,
+  answers: []
+};
+
+function rsqStart() {
+  rsq.current = 0;
+  rsq.mode = 'intro';
+  rsq.score = 0;
+  rsq.answers = [];
+  rsqRender();
+}
+
+function rsqRender() {
+  const stage = document.getElementById('rsq-stage');
+  const next = document.getElementById('rsq-next');
+  const header = document.getElementById('rsq-header');
+  const counter = document.getElementById('rsq-counter');
+  const score = document.getElementById('rsq-score');
+  const catEl = document.getElementById('rsq-cat');
+
+  if (rsq.mode === 'intro') {
+    header.style.display = 'none';
+    catEl.innerHTML = makeCat({state: 'awake', size: 60});
+    stage.innerHTML = `
+      <div class="apq-intro-card">
+        <div class="big-emoji">🐱</div>
+        <h3>Quand faut-il s'inquiéter ?</h3>
+        <p class="lead">5 cartes-risques. À toi de les placer sur la bonne case de la frise temporelle.</p>
+        <p class="helper">Tous les risques quantiques ne se valent pas : certains sont déjà là, d'autres sont à 5-10 ans, et certains sont carrément des mythes. Sauras-tu faire la différence ?</p>
+      </div>
+    `;
+    next.disabled = false;
+    next.textContent = 'Commencer →';
+    return;
+  }
+
+  if (rsq.mode === 'final') {
+    recordGameScore('risques', rsq.score);
+    header.style.display = 'flex';
+    counter.textContent = RSQ_CARDS.length + ' / ' + RSQ_CARDS.length;
+    score.textContent = rsq.score + ' / ' + RSQ_CARDS.length;
+
+    const s = rsq.score;
+    let msg, catState;
+    if (s === 5) {
+      msg = "<strong>Vision claire des risques.</strong> Tu es prêt à conseiller ton organisation sur la stratégie quantique.";
+      catState = 'happy';
+    } else if (s >= 4) {
+      msg = "<strong>Bonne intuition générale.</strong> Quelques nuances à affiner sur les horizons temporels.";
+      catState = 'happy';
+    } else if (s >= 2) {
+      msg = "<strong>À approfondir.</strong> Les risques sont réels — mais pas tous immédiats. Le timing compte autant que la menace.";
+      catState = 'awake';
+    } else {
+      msg = "<strong>À revoir.</strong> Certains risques sont très proches, d'autres relèvent du mythe — la nuance compte.";
+      catState = 'sleeping';
+    }
+
+    catEl.innerHTML = makeCat({state: catState, size: 60});
+    const showHearts = s === 5;
+    const showDance = s >= 4;
+    stage.innerHTML = `
+      <div class="apq-final">
+        <div style="position:relative; min-height:120px;">
+          <div class="${showDance ? 'dancing-cat' : ''}" style="margin: 6px auto 0;">${makeCat({state: catState, size: 100})}</div>
+          ${showHearts ? '<span class="heart" style="left:30%; top:20px; animation-delay: 0s;">♥</span><span class="heart" style="left:50%; top:30px; animation-delay: 0.5s;">♥</span><span class="heart" style="left:70%; top:25px; animation-delay: 1s;">♥</span>' : ''}
+        </div>
+        <div class="apq-final-score">${s} / ${RSQ_CARDS.length}</div>
+        <div class="apq-final-msg">${msg}</div>
+      </div>
+    `;
+    next.disabled = false;
+    next.textContent = 'Recommencer';
+    return;
+  }
+
+  // choice or feedback
+  header.style.display = 'flex';
+  counter.textContent = (rsq.current + 1) + ' / ' + RSQ_CARDS.length;
+  score.textContent = rsq.score;
+
+  const c = RSQ_CARDS[rsq.current];
+  const userAnswer = rsq.answers[rsq.current];
+  const isCorrect = userAnswer === c.category;
+
+  if (rsq.mode === 'choice') {
+    catEl.innerHTML = makeCat({state: 'awake', size: 60});
+    const zonesHTML = ['maintenant', 'bientot', 'plus-tard', 'faux'].map(k => {
+      const lbl = RSQ_LABELS[k];
+      return `<button class="rsq-zone ${k}" onclick="rsqChoose('${k}')">
+        <span class="zone-emoji">${lbl.emoji}</span>
+        <span class="zone-name">${lbl.name}</span>
+        <span class="zone-desc">${lbl.desc}</span>
+      </button>`;
+    }).join('');
+    stage.innerHTML = `
+      <div class="rsq-card-display">
+        <div class="rsq-icon">${c.icon}</div>
+        <div class="rsq-situation">${c.situation}</div>
+      </div>
+      <p class="rsq-prompt">Où placerais-tu ce risque sur la frise temporelle ?</p>
+      <div class="rsq-zones">${zonesHTML}</div>
+    `;
+    next.disabled = true;
+    next.textContent = rsq.current === RSQ_CARDS.length - 1 ? 'Voir le score →' : 'Carte suivante →';
+    return;
+  }
+
+  // feedback
+  catEl.innerHTML = makeCat({state: isCorrect ? 'happy' : 'sleeping', size: 60});
+  const zonesHTML = ['maintenant', 'bientot', 'plus-tard', 'faux'].map(k => {
+    const lbl = RSQ_LABELS[k];
+    let cls = k;
+    if (k === c.category) cls += ' is-correct';
+    else if (k === userAnswer) cls += ' is-wrong';
+    return `<button class="rsq-zone ${cls}" disabled>
+      <span class="zone-emoji">${lbl.emoji}</span>
+      <span class="zone-name">${lbl.name}</span>
+      <span class="zone-desc">${lbl.desc}</span>
+    </button>`;
+  }).join('');
+
+  stage.innerHTML = `
+    <div class="rsq-card-display">
+      <div class="rsq-icon">${c.icon}</div>
+      <div class="rsq-situation">${c.situation}</div>
+    </div>
+    <div class="apq-result ${isCorrect ? 'correct' : 'wrong'}">
+      ${isCorrect ? '✓ Bonne réponse !' : '✗ Pas le bon horizon'}
+    </div>
+    <div class="rsq-zones">${zonesHTML}</div>
+    <div class="speaker-bubble">
+      <div class="speaker-avatar">${makeCat({state: isCorrect ? 'happy' : 'awake', size: 64})}</div>
+      <div class="apq-explanation">
+        <h4>Pourquoi ?</h4>
+        <p>${c.explanation}</p>
+        <p class="ref">→ ${c.reference}</p>
+      </div>
+    </div>
+  `;
+  next.disabled = false;
+  next.textContent = rsq.current === RSQ_CARDS.length - 1 ? 'Voir le score →' : 'Carte suivante →';
+}
+
+function rsqChoose(category) {
+  if (rsq.mode !== 'choice') return;
+  rsq.answers[rsq.current] = category;
+  if (category === RSQ_CARDS[rsq.current].category) rsq.score++;
+  rsq.mode = 'feedback';
+  rsqRender();
+}
+
+function rsqNext() {
+  if (rsq.mode === 'intro') {
+    rsq.mode = 'choice';
+    rsqRender();
+    return;
+  }
+  if (rsq.mode === 'final') {
+    rsqStart();
+    return;
+  }
+  if (rsq.mode === 'feedback') {
+    if (rsq.current === RSQ_CARDS.length - 1) {
+      rsq.mode = 'final';
+    } else {
+      rsq.current++;
+      rsq.mode = 'choice';
+    }
+    rsqRender();
+  }
+}
+
+// ============================================================
+// GAME 4 — QUÉBEC VRAI/FAUX
+// ============================================================
+
+const QBQ_QUESTIONS = [
+  { id: 1, answer: 'vrai', city: 'montreal', icon: '🏢',
+    affirmation: "Il existe un ordinateur quantique fonctionnel à Montréal, à quelques rues de HEC.",
+    explanation: "Vrai. <strong>MonarQ</strong>, un ordinateur quantique supraconducteur de <strong>24 qubits</strong>, est installé à l'ÉTS — à quelques minutes de marche d'HEC. Il est opéré par la communauté académique pour la recherche et la formation.",
+    reference: "MonarQ — ÉTS Montréal" },
+  { id: 2, answer: 'vrai', city: 'bromont', icon: '🖥️',
+    affirmation: "IBM a installé un de ses ordinateurs quantiques commerciaux au Québec.",
+    explanation: "Vrai. Un <strong>IBM Quantum System One</strong> est installé à <strong>Bromont</strong>, dans la zone d'innovation Technum Québec. Il est opéré par PINQ² (Plateforme d'innovation numérique et quantique), un OSBL qui rend cette puissance accessible aux entreprises.",
+    reference: "IBM Quantum System One · PINQ² · Bromont" },
+  { id: 3, answer: 'faux', city: 'sherbrooke', icon: '🚀',
+    affirmation: "Le quantique au Québec est uniquement de la recherche universitaire — il n'y a pas encore d'entreprises commerciales.",
+    explanation: "Faux. Le Québec abrite plusieurs <strong>startups quantiques</strong> actives, notamment <strong>Nord Quantique</strong> (Sherbrooke) qui développe ses propres processeurs, et <strong>Pasqal</strong>. L'écosystème combine recherche (Institut Quantique UdeS), industrie et infrastructures partagées (PINQ²).",
+    reference: "Nord Quantique · Pasqal · Institut Quantique UdeS" },
+  { id: 4, answer: 'vrai', city: 'sherbrooke', icon: '🏗️',
+    affirmation: "Sherbrooke abrite la première zone d'innovation dédiée au quantique au Canada.",
+    explanation: "Vrai. <strong>DistriQ</strong> est la zone d'innovation quantique de Sherbrooke. Elle regroupe l'Institut Quantique de l'UdeS, des startups et des laboratoires de pointe. C'est un cas rare au Canada d'un territoire entièrement structuré autour du quantique.",
+    reference: "DistriQ — Zone d'innovation Sherbrooke" },
+  { id: 5, answer: 'faux', city: 'bromont', icon: '🍁',
+    affirmation: "Pour qu'une PME québécoise utilise un ordinateur quantique, elle doit obligatoirement passer par les États-Unis ou la Chine.",
+    explanation: "Faux. <strong>PINQ²</strong> à Bromont offre une plateforme hybride (quantique + classique) accessible aux PME canadiennes, sans qu'elles aient besoin de posséder ou d'importer l'infrastructure. Le Québec est l'un des rares endroits au monde où une PME peut tester un ordinateur quantique commercial localement.",
+    reference: "PINQ² — accès quantique pour PME canadiennes" }
+];
+
+const qbq = {
+  current: 0,
+  mode: 'intro',
+  score: 0,
+  answers: [],
+  litCities: new Set()
+};
+
+function qbqStart() {
+  qbq.current = 0;
+  qbq.mode = 'intro';
+  qbq.score = 0;
+  qbq.answers = [];
+  qbq.litCities = new Set();
+  // Reset map
+  document.querySelectorAll('#qbq-map .city').forEach(el => el.classList.remove('lit'));
+  qbqRender();
+}
+
+function qbqLightCity(city) {
+  qbq.litCities.add(city);
+  const el = document.querySelector(`#qbq-map .city[data-city="${city}"]`);
+  if (el) el.classList.add('lit');
+}
+
+function qbqRender() {
+  const stage = document.getElementById('qbq-stage');
+  const next = document.getElementById('qbq-next');
+  const header = document.getElementById('qbq-header');
+  const mapWrap = document.getElementById('qbq-map-wrap');
+  const counter = document.getElementById('qbq-counter');
+  const score = document.getElementById('qbq-score');
+  const catEl = document.getElementById('qbq-cat');
+
+  if (qbq.mode === 'intro') {
+    header.style.display = 'none';
+    mapWrap.style.display = 'none';
+    catEl.innerHTML = makeCat({state: 'awake', size: 60});
+    stage.innerHTML = `
+      <div class="apq-intro-card">
+        <div class="big-emoji">🐱🍁</div>
+        <h3>Vrai ou Faux : le Québec quantique ?</h3>
+        <p class="lead">5 affirmations sur ce qui se passe juste à côté de chez vous.</p>
+        <p class="helper">Le Québec joue un rôle qu'on imagine rarement dans la révolution quantique. Sauras-tu distinguer la réalité du mythe ?</p>
+      </div>
+    `;
+    next.disabled = false;
+    next.textContent = 'Commencer →';
+    return;
+  }
+
+  if (qbq.mode === 'final') {
+    recordGameScore('quebec', qbq.score);
+    header.style.display = 'flex';
+    mapWrap.style.display = 'block';
+    counter.textContent = QBQ_QUESTIONS.length + ' / ' + QBQ_QUESTIONS.length;
+    score.textContent = qbq.score + ' / ' + QBQ_QUESTIONS.length;
+
+    const s = qbq.score;
+    let msg, catState;
+    if (s === 5) {
+      msg = "<strong>Bravo !</strong> Tu connais parfaitement l'écosystème québécois. Bromont, Sherbrooke et Montréal n'ont plus de secrets pour toi.";
+      catState = 'happy';
+    } else if (s >= 3) {
+      msg = "<strong>Bon score.</strong> Le Québec est plus présent dans le quantique qu'on ne le pense — et l'écosystème grandit vite.";
+      catState = 'happy';
+    } else if (s >= 1) {
+      msg = "<strong>Surpris ?</strong> Tu n'es pas seul. La majorité des Québécois ignorent qu'on a un ordinateur quantique à Montréal et un IBM à Bromont.";
+      catState = 'awake';
+    } else {
+      msg = "Le Québec est un acteur majeur du quantique en Amérique du Nord. <strong>Tout est à découvrir !</strong>";
+      catState = 'sleeping';
+    }
+
+    catEl.innerHTML = makeCat({state: catState, size: 60});
+    const showHearts = s >= 4;
+    const showDance = s >= 3;
+    stage.innerHTML = `
+      <div class="apq-final">
+        <div style="position:relative; min-height:120px;">
+          <div class="${showDance ? 'dancing-cat' : ''}" style="margin: 6px auto 0;">${makeCat({state: catState, size: 100})}</div>
+          ${showHearts ? '<span class="heart" style="left:30%; top:20px; animation-delay: 0s;">♥</span><span class="heart" style="left:50%; top:30px; animation-delay: 0.5s;">♥</span><span class="heart" style="left:70%; top:25px; animation-delay: 1s;">♥</span>' : ''}
+        </div>
+        <div class="apq-final-score">${s} / ${QBQ_QUESTIONS.length}</div>
+        <div class="apq-final-msg">${msg}</div>
+        <div class="qbq-pour-aller-loin">
+          <h5>Pour aller plus loin</h5>
+          <div class="links">
+            <div class="link-item">
+              <div class="name">DistriQ</div>
+              <div class="place">Sherbrooke</div>
+            </div>
+            <div class="link-item">
+              <div class="name">PINQ²</div>
+              <div class="place">Bromont</div>
+            </div>
+            <div class="link-item">
+              <div class="name">MonarQ</div>
+              <div class="place">ÉTS Montréal</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    next.disabled = false;
+    next.textContent = 'Recommencer';
+    return;
+  }
+
+  // choice or feedback
+  header.style.display = 'flex';
+  mapWrap.style.display = 'block';
+  counter.textContent = (qbq.current + 1) + ' / ' + QBQ_QUESTIONS.length;
+  score.textContent = qbq.score;
+
+  const q = QBQ_QUESTIONS[qbq.current];
+  const userAnswer = qbq.answers[qbq.current];
+  const isCorrect = userAnswer === q.answer;
+
+  if (qbq.mode === 'choice') {
+    catEl.innerHTML = makeCat({state: 'awake', size: 60});
+    stage.innerHTML = `
+      <div class="qbq-affirmation-card">
+        <div class="qbq-icon">${q.icon}</div>
+        <div class="qbq-affirmation">« ${q.affirmation} »</div>
+      </div>
+      <p class="qbq-prompt">Ton verdict ?</p>
+      <div class="qbq-choices">
+        <button class="qbq-choice vrai" onclick="qbqChoose('vrai')">✅ Vrai</button>
+        <button class="qbq-choice faux" onclick="qbqChoose('faux')">❌ Faux</button>
+      </div>
+    `;
+    next.disabled = true;
+    next.textContent = qbq.current === QBQ_QUESTIONS.length - 1 ? 'Voir le score →' : 'Suivant →';
+    return;
+  }
+
+  // feedback
+  catEl.innerHTML = makeCat({state: isCorrect ? 'happy' : 'sleeping', size: 60});
+  const choices = ['vrai', 'faux'];
+  const labels = { vrai: '✅ Vrai', faux: '❌ Faux' };
+  const choicesHTML = choices.map(c => {
+    let cls = c;
+    if (c === q.answer) cls += ' is-correct';
+    else if (c === userAnswer) cls += ' is-wrong';
+    return `<button class="qbq-choice ${cls}" disabled>${labels[c]}</button>`;
+  }).join('');
+
+  stage.innerHTML = `
+    <div class="qbq-affirmation-card">
+      <div class="qbq-icon">${q.icon}</div>
+      <div class="qbq-affirmation">« ${q.affirmation} »</div>
+    </div>
+    <div class="apq-result ${isCorrect ? 'correct' : 'wrong'}">
+      ${isCorrect ? '✓ Bonne réponse !' : '✗ Pas tout à fait'}
+    </div>
+    <div class="qbq-choices">${choicesHTML}</div>
+    <div class="speaker-bubble">
+      <div class="speaker-avatar">${makeCat({state: isCorrect ? 'happy' : 'awake', size: 64})}</div>
+      <div class="apq-explanation">
+        <h4>Pourquoi ?</h4>
+        <p>${q.explanation}</p>
+        <p class="ref">→ ${q.reference}</p>
+      </div>
+    </div>
+  `;
+  next.disabled = false;
+  next.textContent = qbq.current === QBQ_QUESTIONS.length - 1 ? 'Voir le score →' : 'Suivant →';
+}
+
+function qbqChoose(answer) {
+  if (qbq.mode !== 'choice') return;
+  const q = QBQ_QUESTIONS[qbq.current];
+  qbq.answers[qbq.current] = answer;
+  if (answer === q.answer) {
+    qbq.score++;
+    qbqLightCity(q.city);
+  }
+  qbq.mode = 'feedback';
+  qbqRender();
+}
+
+function qbqNext() {
+  if (qbq.mode === 'intro') {
+    qbq.mode = 'choice';
+    qbqRender();
+    return;
+  }
+  if (qbq.mode === 'final') {
+    qbqStart();
+    return;
+  }
+  if (qbq.mode === 'feedback') {
+    if (qbq.current === QBQ_QUESTIONS.length - 1) {
+      qbq.mode = 'final';
+    } else {
+      qbq.current++;
+      qbq.mode = 'choice';
+    }
+    qbqRender();
+  }
+}
+</script>
+</body>
+</html>
