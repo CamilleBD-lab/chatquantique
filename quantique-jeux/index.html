@@ -576,21 +576,27 @@
     background: var(--beige-deep);
     border-radius: 14px;
     border: 3px solid var(--green-dark);
+    position: relative;
+    box-shadow: inset 0 -8px 16px rgba(0,0,0,0.08);
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
   }
+  .cat-box > .cat-svg, .cat-box > .superposed-cat { opacity: 0.6; }
   .cat-box .lid {
     position: absolute;
-    top: -3px;
+    top: -10px;
     left: -3px;
     right: -3px;
-    height: 26px;
+    height: 30px;
     background: var(--green-dark);
     border-radius: 14px 14px 0 0;
-    transform-origin: top left;
-    transform: rotate(-95deg);
+    box-shadow: 0 3px 0 rgba(0,0,0,0.18);
+  }
+  .cat-box.quantum-halo { animation: cat-box-halo 2.4s ease-in-out infinite; }
+  @keyframes cat-box-halo {
+    0%, 100% { box-shadow: inset 0 -8px 16px rgba(0,0,0,0.08), 0 0 0 rgba(94,160,229,0); }
+    50% { box-shadow: inset 0 -8px 16px rgba(0,0,0,0.08), 0 0 22px rgba(94,160,229,0.45), 0 0 44px rgba(201,169,97,0.35); }
   }
 
   /* Twin cats */
@@ -1199,6 +1205,78 @@
     100% { transform: translateY(8px); opacity: 0.85; }
   }
 
+  /* ===== "Pourquoi des chats ?" disclosure ===== */
+  .why-cats {
+    background: var(--white);
+    border: 1px solid rgba(47,79,74,0.12);
+    border-radius: 14px;
+    margin: 0 0 22px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+    box-shadow: 0 2px 10px rgba(47,79,74,0.05);
+  }
+  .why-cats[open] { box-shadow: 0 6px 22px rgba(47,79,74,0.12); }
+  .why-cats summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    user-select: none;
+  }
+  .why-cats summary::-webkit-details-marker { display: none; }
+  .why-cats summary:hover { background: var(--beige); }
+  .why-cats-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    background: var(--beige);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--green-dark);
+  }
+  .why-cats-icon svg { width: 38px; height: 38px; }
+  .why-cats-title {
+    flex: 1;
+    font-weight: 700;
+    color: var(--green-dark);
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+  }
+  .why-cats-chevron {
+    color: var(--green-light);
+    font-size: 1.5rem;
+    line-height: 1;
+    transition: transform 0.2s;
+    font-weight: 400;
+  }
+  .why-cats[open] .why-cats-chevron { transform: rotate(90deg); }
+  .why-cats-content {
+    padding: 14px 26px 22px;
+    color: var(--green-dark);
+    line-height: 1.65;
+    font-size: 0.95rem;
+    border-top: 1px solid rgba(47,79,74,0.08);
+  }
+  .why-cats-content p { margin-bottom: 10px; }
+  .why-cats-content p:last-child { margin-bottom: 0; }
+  .why-cats-content em { color: var(--green-mid); font-style: italic; }
+  .why-cats-content strong { color: var(--green-dark); font-weight: 700; }
+  .why-cats-illust {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin: 6px 0 16px;
+  }
+  .why-cats-illust .arrow {
+    color: var(--green-light);
+    font-size: 1.4rem;
+  }
+
   /* ===== Player setup screen ===== */
   .setup-card {
     background: var(--white);
@@ -1669,6 +1747,20 @@
     <h1>Le quantique, par l'expérience</h1>
     <p class="subtitle">Quatre thèmes, quatre jeux. Choisis-en un pour commencer.</p>
 
+    <details class="why-cats" id="why-cats">
+      <summary>
+        <div class="why-cats-icon" id="why-cats-icon-mount"></div>
+        <span class="why-cats-title">Pourquoi des chats ?</span>
+        <span class="why-cats-chevron">›</span>
+      </summary>
+      <div class="why-cats-content">
+        <div class="why-cats-illust" id="why-cats-illust-mount"></div>
+        <p><strong>Le chat de Schrödinger</strong> est l'expérience de pensée la plus célèbre de la physique quantique. En 1935, Erwin Schrödinger imagine un chat enfermé dans une boîte avec un mécanisme déclenché par un événement quantique aléatoire (la désintégration d'un atome).</p>
+        <p>Tant que la boîte reste fermée, le chat est dans une <strong>superposition de deux états</strong> : vivant <em>et</em> mort à la fois. Ce n'est qu'à l'ouverture — la mesure — que l'état s'effondre vers l'un ou l'autre.</p>
+        <p>Cette image est devenue la mascotte naturelle de l'informatique quantique : nos qubits sont eux aussi dans plusieurs états à la fois. C'est pourquoi tu croises des chats partout dans cette expérience — y compris sur ton avatar.</p>
+      </div>
+    </details>
+
     <div class="menu-grid">
       <div class="pastille" onclick="openGame('classique-vs-quantique')">
         <span class="badge-status ready">Prêt</span>
@@ -2095,6 +2187,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('pastille-cat-3').innerHTML = makeCat({state:'awake', size:64, color:'#FFFFFF'});
   document.getElementById('pastille-cat-4').innerHTML = makeCat({state:'happy', size:64, color:'#FFFFFF'});
   document.getElementById('gate-cat-svg').innerHTML = makeCat({state:'awake', size:80});
+  const wcIcon = document.getElementById('why-cats-icon-mount');
+  if (wcIcon) wcIcon.innerHTML = makeCat({state:'awake', size:38});
+  const wcIllust = document.getElementById('why-cats-illust-mount');
+  if (wcIllust) wcIllust.innerHTML = `${makeSuperposedCat(72)}<span class="arrow">→</span>${makeCat({state:'happy', size:64})}`;
   const input = document.getElementById('gate-input');
   if (input) input.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkPassword(); });
   const setupName = document.getElementById('setup-name');
@@ -2756,7 +2852,7 @@ function cvqNext() {
 // PANEL RENDERERS — visualisations comparatives
 // ============================================================
 const PANELS = {
-  // ----- Q1 — boxes -----
+  // ----- Q1 — boxes (closed: la boîte de Schrödinger, chats visibles par transparence) -----
   q1Classical: () => `
     <div class="cat-box">
       ${makeCat({state: 'sleeping', size: 90})}
@@ -2764,7 +2860,7 @@ const PANELS = {
     </div>
   `,
   q1Quantum: () => `
-    <div class="cat-box">
+    <div class="cat-box quantum-halo">
       ${makeSuperposedCat(90)}
       <div class="lid"></div>
     </div>
@@ -2946,7 +3042,7 @@ const appq = {
 
 function appStart() {
   appq.current = 0;
-  appq.mode = 'intro';
+  appq.mode = 'choice';
   appq.score = 0;
   appq.answers = [];
   appRender();
@@ -3149,7 +3245,7 @@ const rsq = {
 
 function rsqStart() {
   rsq.current = 0;
-  rsq.mode = 'intro';
+  rsq.mode = 'choice';
   rsq.score = 0;
   rsq.answers = [];
   rsqRender();
@@ -3353,7 +3449,7 @@ const qbq = {
 
 function qbqStart() {
   qbq.current = 0;
-  qbq.mode = 'intro';
+  qbq.mode = 'choice';
   qbq.score = 0;
   qbq.answers = [];
   qbq.litCities = new Set();
