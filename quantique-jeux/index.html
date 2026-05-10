@@ -703,10 +703,11 @@
     background: rgba(94,138,102,0.55);
     animation: q-pulse 1.5s ease-in-out infinite;
   }
-  .maze-cell.cat-here::after {
-    content: '🐱';
-    font-size: 1rem;
-    position: absolute;
+  .maze-cell.cat-here {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='22,32 30,8 42,32' fill='%232F4F4A'/><polygon points='58,32 70,8 78,32' fill='%232F4F4A'/><ellipse cx='50' cy='52' rx='30' ry='28' fill='%232F4F4A'/><circle cx='40' cy='49' r='3.5' fill='%23fff'/><circle cx='60' cy='49' r='3.5' fill='%23fff'/></svg>");
+    background-size: 75%;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   /* Recap */
@@ -852,7 +853,8 @@
     margin-bottom: 16px;
     border-left: 4px solid var(--green-dark);
   }
-  .apq-icon { font-size: 2.8rem; margin-bottom: 10px; line-height: 1; }
+  .apq-icon { width: 72px; height: 72px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+  .apq-icon svg { width: 100%; height: 100%; display: block; }
   .apq-situation {
     font-size: 1.15rem;
     font-weight: 700;
@@ -973,7 +975,8 @@
     text-align: center;
     border-left: 4px solid var(--gold);
   }
-  .apq-intro-card .big-emoji { font-size: 3rem; margin-bottom: 14px; }
+  .apq-intro-card .big-emoji { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 14px; min-height: 80px; }
+  .apq-intro-card .big-emoji svg { width: 80px; height: 80px; }
   .apq-intro-card h3 {
     color: var(--green-dark);
     font-size: 1.4rem;
@@ -1073,7 +1076,8 @@
     margin-bottom: 16px;
     border-left: 4px solid var(--green-dark);
   }
-  .rsq-icon { font-size: 2.6rem; margin-bottom: 10px; line-height: 1; }
+  .rsq-icon { width: 68px; height: 68px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+  .rsq-icon svg { width: 100%; height: 100%; display: block; }
   .rsq-situation {
     font-size: 1.05rem;
     font-weight: 700;
@@ -1195,7 +1199,209 @@
     100% { transform: translateY(8px); opacity: 0.85; }
   }
 
-  /* ===== Mastery card (menu) ===== */
+  /* ===== Player setup screen ===== */
+  .setup-card {
+    background: var(--white);
+    border: 1px solid rgba(47,79,74,0.1);
+    padding: 36px 36px;
+    border-radius: 16px;
+    max-width: 540px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(47,79,74,0.08);
+    margin: 30px auto;
+  }
+  .setup-card h2 {
+    font-size: 1.6rem;
+    color: var(--green-dark);
+    margin-bottom: 8px;
+    font-weight: 800;
+  }
+  .setup-card .lead {
+    color: var(--green-mid);
+    margin-bottom: 22px;
+    line-height: 1.5;
+  }
+  .setup-card label {
+    display: block;
+    text-align: left;
+    font-size: 0.78rem;
+    color: var(--green-light);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .setup-card input[type=text] {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 1rem;
+    border: 2px solid rgba(47,79,74,0.2);
+    border-radius: 10px;
+    background: var(--beige);
+    color: var(--green-dark);
+    font-family: inherit;
+    margin-bottom: 18px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .setup-card input[type=text]:focus { border-color: var(--green-dark); }
+
+  .breed-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  @media (max-width: 500px) { .breed-grid { grid-template-columns: repeat(2, 1fr); } }
+  .breed-choice {
+    cursor: pointer;
+    border: 3px solid transparent;
+    border-radius: 12px;
+    padding: 12px 8px 8px;
+    text-align: center;
+    background: var(--beige);
+    transition: all 0.18s;
+  }
+  .breed-choice:hover {
+    transform: translateY(-3px);
+    border-color: var(--green-mid);
+  }
+  .breed-choice.selected {
+    border-color: var(--green-dark);
+    background: var(--gold-soft);
+    box-shadow: 0 4px 14px rgba(201,169,97,0.4);
+  }
+  .breed-choice .breed-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-top: 4px;
+  }
+
+  /* ===== Leaderboard (menu) ===== */
+  .leaderboard {
+    background: var(--white);
+    border: 1px solid rgba(47,79,74,0.12);
+    border-radius: 16px;
+    padding: 18px 22px;
+    margin: 32px 0 18px;
+    box-shadow: 0 4px 16px rgba(47,79,74,0.06);
+  }
+  .lb-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .lb-header h3 {
+    font-size: 1.05rem;
+    color: var(--green-dark);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .lb-header .lb-actions { display: flex; gap: 8px; }
+  .lb-new-btn {
+    background: transparent;
+    color: var(--green-dark);
+    border: 2px solid var(--green-dark);
+    padding: 7px 14px;
+    font-size: 0.82rem;
+  }
+  .lb-new-btn:hover { background: var(--green-dark); color: var(--white); }
+  .lb-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .lb-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--beige);
+    transition: background 0.2s;
+  }
+  .lb-row.current {
+    background: var(--gold-soft);
+    border-left: 4px solid var(--gold);
+    padding-left: 10px;
+  }
+  .lb-rank {
+    width: 26px;
+    text-align: center;
+    font-weight: 800;
+    color: var(--green-light);
+    font-family: "SF Mono", Monaco, monospace;
+    font-size: 0.95rem;
+  }
+  .lb-row.current .lb-rank { color: var(--green-dark); }
+  .lb-avatar {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(47,79,74,0.15);
+  }
+  .lb-avatar svg { width: 100%; height: 100%; }
+  .lb-info { flex: 1; min-width: 0; }
+  .lb-name {
+    font-weight: 700;
+    color: var(--green-dark);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+  .lb-row.current .lb-name::after {
+    content: 'TOI';
+    background: var(--gold);
+    color: var(--green-dark);
+    font-size: 0.62rem;
+    padding: 2px 6px;
+    border-radius: 6px;
+    margin-left: 8px;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+  }
+  .lb-bar {
+    height: 6px;
+    background: var(--beige-soft);
+    border-radius: 3px;
+    overflow: hidden;
+    max-width: 220px;
+  }
+  .lb-row.current .lb-bar { background: rgba(255,255,255,0.6); }
+  .lb-bar-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 3px;
+    transition: width 0.4s;
+  }
+  .lb-score {
+    font-family: "SF Mono", Monaco, monospace;
+    font-weight: 700;
+    color: var(--green-dark);
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+  .lb-empty {
+    text-align: center;
+    color: var(--green-light);
+    padding: 14px;
+    font-size: 0.9rem;
+    font-style: italic;
+  }
+
+  /* ===== Mastery card (menu) — DEPRECATED, kept for back-compat ===== */
   .mastery-card {
     background: var(--white);
     border: 1px solid rgba(47,79,74,0.12);
@@ -1325,7 +1531,8 @@
     margin-bottom: 16px;
     border-left: 4px solid #003D7A;
   }
-  .qbq-icon { font-size: 2.4rem; margin-bottom: 10px; line-height: 1; }
+  .qbq-icon { width: 64px; height: 64px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; }
+  .qbq-icon svg { width: 100%; height: 100%; display: block; }
   .qbq-affirmation {
     font-size: 1.08rem;
     font-weight: 700;
@@ -1441,12 +1648,26 @@
     </div>
   </div>
 
+  <!-- ============ PLAYER SETUP ============ -->
+  <div id="screen-player-setup" class="screen">
+    <div class="setup-card">
+      <h2 id="setup-title">Bienvenue !</h2>
+      <p class="lead">Crée ton profil pour entrer dans le classement.</p>
+
+      <label for="setup-name">Prénom ou pseudo</label>
+      <input type="text" id="setup-name" placeholder="Ton nom" maxlength="20" autocomplete="off">
+
+      <label>Choisis ton chat</label>
+      <div class="breed-grid" id="setup-breeds"></div>
+
+      <button id="setup-confirm" onclick="confirmPlayerSetup()" disabled>C'est parti →</button>
+    </div>
+  </div>
+
   <!-- ============ MENU ============ -->
   <div id="screen-menu" class="screen">
     <h1>Le quantique, par l'expérience</h1>
     <p class="subtitle">Quatre thèmes, quatre jeux. Choisis-en un pour commencer.</p>
-
-    <div class="mastery-card" id="mastery-card"></div>
 
     <div class="menu-grid">
       <div class="pastille" onclick="openGame('classique-vs-quantique')">
@@ -1481,6 +1702,8 @@
         <div class="pastille-score" id="ps-qbq">Pas encore joué</div>
       </div>
     </div>
+
+    <div class="leaderboard" id="leaderboard"></div>
   </div>
 
   <!-- ============ GAME SCREEN ============ -->
@@ -1619,26 +1842,40 @@
 // ============================================================
 // SVG CAT BUILDER
 // ============================================================
+const CAT_BREEDS = {
+  sauvage: { name: 'Sauvage',  color: '#2F4F4A', earInner: '#E8D4A2', eyeColor: '#0d1f1c', eyeWhite: true,  noseColor: '#1a3530' },
+  siamois: { name: 'Siamois',  color: '#E8D4A2', earOuter: '#5A4634', earInner: '#3D2A1F', eyeColor: '#3B5FAA', eyeWhite: true, noseColor: '#5A4634', mask: '#5A4634' },
+  persan:  { name: 'Persan',   color: '#F0EAD8', earInner: '#E8B8B8', eyeColor: '#A86F1F', eyeWhite: true,  noseColor: '#A8786C', fluffy: true },
+  tigre:   { name: 'Tigré',    color: '#D89358', earInner: '#F5C8A0', eyeColor: '#3A6D3A', eyeWhite: true,  noseColor: '#9B5A2C', stripes: '#9B5A2C' },
+  noir:    { name: 'Noir',     color: '#1F1F1F', earInner: '#A36680', eyeColor: '#E8D04A', eyeWhite: false, noseColor: '#7A4A4A' },
+  gris:    { name: 'Gris',     color: '#7A8A8E', earInner: '#E8B8B8', eyeColor: '#3A6D3A', eyeWhite: true,  noseColor: '#3D4A4D' }
+};
+
 function makeCat(opts) {
   const o = Object.assign({
-    state: 'awake',
-    color: '#2F4F4A',
-    size: 80,
-    classes: ''
+    state: 'awake', color: null, size: 80, classes: '', breed: null
   }, opts || {});
+
+  const b = (o.breed && CAT_BREEDS[o.breed]) || CAT_BREEDS.sauvage;
+  const color = o.color || b.color;
+  const earOuter = b.earOuter || color;
+  const earInner = b.earInner;
+  const eyeColor = b.eyeColor;
+  const noseColor = b.noseColor || '#1a3530';
+  const eyeWhite = b.eyeWhite !== false;
 
   let eyes;
   if (o.state === 'sleeping') {
-    eyes = `<path d="M 33 50 Q 40 54 47 50" fill="none" stroke="#0d1f1c" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M 53 50 Q 60 54 67 50" fill="none" stroke="#0d1f1c" stroke-width="2.2" stroke-linecap="round"/>`;
+    eyes = `<path d="M 33 50 Q 40 54 47 50" fill="none" stroke="${eyeColor}" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M 53 50 Q 60 54 67 50" fill="none" stroke="${eyeColor}" stroke-width="2.2" stroke-linecap="round"/>`;
   } else if (o.state === 'happy' || o.state === 'purr') {
-    eyes = `<path d="M 33 50 Q 40 44 47 50" fill="none" stroke="#0d1f1c" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M 53 50 Q 60 44 67 50" fill="none" stroke="#0d1f1c" stroke-width="2.2" stroke-linecap="round"/>`;
+    eyes = `<path d="M 33 50 Q 40 44 47 50" fill="none" stroke="${eyeColor}" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M 53 50 Q 60 44 67 50" fill="none" stroke="${eyeColor}" stroke-width="2.2" stroke-linecap="round"/>`;
   } else {
-    eyes = `<circle cx="40" cy="49" r="3.5" fill="#0d1f1c"/>
-            <circle cx="60" cy="49" r="3.5" fill="#0d1f1c"/>
-            <circle cx="41" cy="48" r="1" fill="#fff"/>
-            <circle cx="61" cy="48" r="1" fill="#fff"/>`;
+    const wh = eyeWhite ? `<circle cx="41" cy="48" r="1" fill="#fff"/><circle cx="61" cy="48" r="1" fill="#fff"/>` : '';
+    eyes = `<circle cx="40" cy="49" r="3.5" fill="${eyeColor}"/>
+            <circle cx="60" cy="49" r="3.5" fill="${eyeColor}"/>
+            ${wh}`;
   }
 
   let mouth;
@@ -1657,15 +1894,33 @@ function makeCat(opts) {
        <text x="76" y="14" font-size="8" font-weight="700" fill="#0d1f1c">z</text>`
     : '';
 
+  let breedExtras = '';
+  if (b.fluffy) {
+    breedExtras += `<ellipse cx="50" cy="70" rx="36" ry="9" fill="${color}"/>`;
+  }
+  if (b.mask) {
+    breedExtras += `<ellipse cx="50" cy="56" rx="22" ry="13" fill="${b.mask}" opacity="0.55"/>`;
+  }
+  if (b.stripes) {
+    breedExtras += `
+      <path d="M 38 30 L 42 38" stroke="${b.stripes}" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 50 26 L 50 34" stroke="${b.stripes}" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 62 30 L 58 38" stroke="${b.stripes}" stroke-width="2.5" stroke-linecap="round" opacity="0.9"/>
+      <path d="M 26 50 L 33 51" stroke="${b.stripes}" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+      <path d="M 67 51 L 74 50" stroke="${b.stripes}" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+    `;
+  }
+
   return `
     <svg viewBox="0 0 100 100" width="${o.size}" height="${o.size}" class="cat-svg ${o.classes}" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="22,32 30,8 42,32" fill="${o.color}"/>
-      <polygon points="58,32 70,8 78,32" fill="${o.color}"/>
-      <polygon points="28,28 30,16 36,28" fill="#E8D4A2" opacity="0.7"/>
-      <polygon points="64,28 70,16 72,28" fill="#E8D4A2" opacity="0.7"/>
-      <ellipse cx="50" cy="52" rx="30" ry="28" fill="${o.color}"/>
+      <polygon points="22,32 30,8 42,32" fill="${earOuter}"/>
+      <polygon points="58,32 70,8 78,32" fill="${earOuter}"/>
+      <polygon points="28,28 30,16 36,28" fill="${earInner}" opacity="0.85"/>
+      <polygon points="64,28 70,16 72,28" fill="${earInner}" opacity="0.85"/>
+      <ellipse cx="50" cy="52" rx="30" ry="28" fill="${color}"/>
+      ${breedExtras}
       ${eyes}
-      <polygon points="47,55 53,55 50,59" fill="#1a3530"/>
+      <polygon points="47,55 53,55 50,59" fill="${noseColor}"/>
       ${mouth}
       <line x1="22" y1="56" x2="36" y2="58" stroke="#0d1f1c" stroke-width="1" opacity="0.5"/>
       <line x1="22" y1="61" x2="36" y2="61" stroke="#0d1f1c" stroke-width="1" opacity="0.5"/>
@@ -1686,6 +1941,153 @@ function makeSuperposedCat(size) {
   `;
 }
 
+// ============================================================
+// ICONS — same drawn style as the cats (green-dark + gold accents)
+// ============================================================
+const ICONS = {
+  lock: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 30 48 Q 30 22, 50 22 Q 70 22, 70 48" fill="none" stroke="#2F4F4A" stroke-width="7" stroke-linecap="round"/>
+    <rect x="20" y="46" width="60" height="46" rx="6" fill="#2F4F4A"/>
+    <circle cx="50" cy="62" r="6" fill="#E8D4A2"/>
+    <rect x="47" y="64" width="6" height="14" fill="#E8D4A2"/>
+  </svg>`,
+  email: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect x="12" y="26" width="76" height="50" rx="4" fill="#2F4F4A"/>
+    <path d="M 14 28 L 50 56 L 86 28" fill="none" stroke="#E8D4A2" stroke-width="3.5" stroke-linejoin="round"/>
+  </svg>`,
+  robot: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <line x1="50" y1="18" x2="50" y2="32" stroke="#2F4F4A" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="50" cy="14" r="5" fill="#C9A961"/>
+    <rect x="22" y="32" width="56" height="50" rx="10" fill="#2F4F4A"/>
+    <rect x="34" y="46" width="32" height="20" rx="3" fill="#1a3530"/>
+    <circle cx="42" cy="56" r="4" fill="#E8D4A2"/>
+    <circle cx="58" cy="56" r="4" fill="#E8D4A2"/>
+    <rect x="40" y="72" width="20" height="3" rx="1.5" fill="#E8D4A2"/>
+    <line x1="22" y1="50" x2="14" y2="50" stroke="#2F4F4A" stroke-width="3" stroke-linecap="round"/>
+    <line x1="78" y1="50" x2="86" y2="50" stroke="#2F4F4A" stroke-width="3" stroke-linecap="round"/>
+  </svg>`,
+  molecule: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <line x1="30" y1="32" x2="50" y2="50" stroke="#2F4F4A" stroke-width="3"/>
+    <line x1="70" y1="32" x2="50" y2="50" stroke="#2F4F4A" stroke-width="3"/>
+    <line x1="30" y1="68" x2="50" y2="50" stroke="#2F4F4A" stroke-width="3"/>
+    <line x1="70" y1="68" x2="50" y2="50" stroke="#2F4F4A" stroke-width="3"/>
+    <circle cx="50" cy="50" r="11" fill="#2F4F4A"/>
+    <circle cx="30" cy="32" r="9" fill="#C9A961"/>
+    <circle cx="70" cy="32" r="9" fill="#C9A961"/>
+    <circle cx="30" cy="68" r="9" fill="#C9A961"/>
+    <circle cx="70" cy="68" r="9" fill="#C9A961"/>
+  </svg>`,
+  web: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="34" fill="#2F4F4A"/>
+    <ellipse cx="50" cy="50" rx="34" ry="14" fill="none" stroke="#E8D4A2" stroke-width="2.5"/>
+    <ellipse cx="50" cy="50" rx="14" ry="34" fill="none" stroke="#E8D4A2" stroke-width="2.5"/>
+    <line x1="16" y1="50" x2="84" y2="50" stroke="#E8D4A2" stroke-width="2.5"/>
+    <line x1="50" y1="16" x2="50" y2="84" stroke="#E8D4A2" stroke-width="2.5"/>
+  </svg>`,
+  baguette: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="50" cy="52" rx="36" ry="13" fill="#C9A961" stroke="#2F4F4A" stroke-width="3"/>
+    <line x1="32" y1="46" x2="38" y2="58" stroke="#2F4F4A" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="46" y1="44" x2="52" y2="60" stroke="#2F4F4A" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="60" y1="46" x2="66" y2="58" stroke="#2F4F4A" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>`,
+  pill: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect x="18" y="40" width="64" height="20" rx="10" fill="#C9A961"/>
+    <path d="M 28 40 L 50 40 L 50 60 L 28 60 A 10 10 0 0 1 28 40 Z" fill="#2F4F4A"/>
+    <line x1="50" y1="40" x2="50" y2="60" stroke="#1a3530" stroke-width="1.5"/>
+  </svg>`,
+  bank: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="18,42 50,22 82,42" fill="#2F4F4A"/>
+    <rect x="18" y="42" width="64" height="6" fill="#2F4F4A"/>
+    <rect x="22" y="48" width="6" height="30" fill="#2F4F4A"/>
+    <rect x="36" y="48" width="6" height="30" fill="#2F4F4A"/>
+    <rect x="47" y="48" width="6" height="30" fill="#2F4F4A"/>
+    <rect x="58" y="48" width="6" height="30" fill="#2F4F4A"/>
+    <rect x="72" y="48" width="6" height="30" fill="#2F4F4A"/>
+    <rect x="16" y="78" width="68" height="8" fill="#2F4F4A"/>
+  </svg>`,
+  shield: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 50 16 L 80 26 L 80 56 Q 80 78, 50 88 Q 20 78, 20 56 L 20 26 Z" fill="#2F4F4A"/>
+    <path d="M 42 50 L 48 56 L 62 40" fill="none" stroke="#C9A961" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`,
+  building: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect x="24" y="18" width="52" height="68" fill="#2F4F4A"/>
+    <rect x="32" y="26" width="9" height="9" fill="#E8D4A2"/>
+    <rect x="46" y="26" width="9" height="9" fill="#E8D4A2"/>
+    <rect x="60" y="26" width="9" height="9" fill="#E8D4A2"/>
+    <rect x="32" y="40" width="9" height="9" fill="#E8D4A2"/>
+    <rect x="46" y="40" width="9" height="9" fill="#E8D4A2"/>
+    <rect x="60" y="40" width="9" height="9" fill="#E8D4A2"/>
+    <rect x="32" y="54" width="9" height="9" fill="#E8D4A2"/>
+    <rect x="46" y="54" width="9" height="9" fill="#E8D4A2"/>
+    <rect x="60" y="54" width="9" height="9" fill="#E8D4A2"/>
+    <rect x="44" y="72" width="12" height="14" fill="#C9A961"/>
+  </svg>`,
+  computer: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect x="14" y="22" width="72" height="48" rx="4" fill="#2F4F4A"/>
+    <rect x="20" y="28" width="60" height="36" fill="#E8D4A2"/>
+    <rect x="44" y="70" width="12" height="10" fill="#2F4F4A"/>
+    <rect x="28" y="80" width="44" height="6" rx="3" fill="#2F4F4A"/>
+  </svg>`,
+  rocket: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 50 14 Q 66 28, 66 50 L 66 70 L 34 70 L 34 50 Q 34 28, 50 14 Z" fill="#2F4F4A"/>
+    <circle cx="50" cy="40" r="8" fill="#E8D4A2"/>
+    <polygon points="34,58 22,76 34,76" fill="#C9A961"/>
+    <polygon points="66,58 78,76 66,76" fill="#C9A961"/>
+    <polygon points="42,70 50,88 58,70" fill="#C9A961"/>
+  </svg>`,
+  crane: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect x="22" y="22" width="6" height="64" fill="#2F4F4A"/>
+    <rect x="22" y="22" width="60" height="4" fill="#2F4F4A"/>
+    <rect x="22" y="34" width="60" height="3" fill="#2F4F4A"/>
+    <line x1="34" y1="22" x2="34" y2="34" stroke="#2F4F4A" stroke-width="1"/>
+    <line x1="46" y1="22" x2="46" y2="34" stroke="#2F4F4A" stroke-width="1"/>
+    <line x1="58" y1="22" x2="58" y2="34" stroke="#2F4F4A" stroke-width="1"/>
+    <line x1="70" y1="22" x2="70" y2="34" stroke="#2F4F4A" stroke-width="1"/>
+    <line x1="74" y1="34" x2="74" y2="62" stroke="#C9A961" stroke-width="2"/>
+    <rect x="68" y="62" width="12" height="10" fill="#C9A961"/>
+    <rect x="14" y="84" width="72" height="3" fill="#2F4F4A"/>
+  </svg>`,
+  'maple-leaf': `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <line x1="50" y1="64" x2="50" y2="86" stroke="#2F4F4A" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 50 16 L 44 28 L 32 22 L 36 36 L 22 32 L 30 46 L 22 54 L 36 52 L 32 64 L 50 60 L 68 64 L 64 52 L 78 54 L 70 46 L 78 32 L 64 36 L 68 22 L 56 28 Z" fill="#C9A961" stroke="#2F4F4A" stroke-width="2"/>
+  </svg>`,
+  sun: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="20" fill="#C9A961"/>
+    <g stroke="#C9A961" stroke-width="4" stroke-linecap="round">
+      <line x1="50" y1="14" x2="50" y2="22"/>
+      <line x1="50" y1="78" x2="50" y2="86"/>
+      <line x1="14" y1="50" x2="22" y2="50"/>
+      <line x1="78" y1="50" x2="86" y2="50"/>
+      <line x1="22" y1="22" x2="28" y2="28"/>
+      <line x1="72" y1="72" x2="78" y2="78"/>
+      <line x1="22" y1="78" x2="28" y2="72"/>
+      <line x1="72" y1="28" x2="78" y2="22"/>
+    </g>
+  </svg>`,
+  snowflake: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#5DA0E0" stroke-width="3" stroke-linecap="round" fill="none">
+      <line x1="50" y1="14" x2="50" y2="86"/>
+      <line x1="14" y1="50" x2="86" y2="50"/>
+      <line x1="22" y1="22" x2="78" y2="78"/>
+      <line x1="22" y1="78" x2="78" y2="22"/>
+      <line x1="50" y1="14" x2="44" y2="22"/>
+      <line x1="50" y1="14" x2="56" y2="22"/>
+      <line x1="50" y1="86" x2="44" y2="78"/>
+      <line x1="50" y1="86" x2="56" y2="78"/>
+      <line x1="14" y1="50" x2="22" y2="44"/>
+      <line x1="14" y1="50" x2="22" y2="56"/>
+      <line x1="86" y1="50" x2="78" y2="44"/>
+      <line x1="86" y1="50" x2="78" y2="56"/>
+    </g>
+  </svg>`
+};
+
+function inlineIcon(name, size) {
+  const svg = ICONS[name];
+  if (!svg) return '';
+  return svg.replace('<svg ', `<svg width="${size}" height="${size}" style="vertical-align:middle;display:inline-block;" `);
+}
+
 // Inject pastille cats / mascots on load
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('pastille-cat-1').innerHTML = makeCat({state:'awake', size:64, color:'#FFFFFF'});
@@ -1695,6 +2097,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('gate-cat-svg').innerHTML = makeCat({state:'awake', size:80});
   const input = document.getElementById('gate-input');
   if (input) input.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkPassword(); });
+  const setupName = document.getElementById('setup-name');
+  if (setupName) {
+    setupName.addEventListener('input', updateSetupBtn);
+    setupName.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !document.getElementById('setup-confirm').disabled) confirmPlayerSetup();
+    });
+  }
 });
 
 // ============================================================
@@ -1705,7 +2114,11 @@ function checkPassword() {
   const input = document.getElementById('gate-input');
   const err = document.getElementById('gate-error');
   if (input.value === PASSWORD) {
-    showScreen('screen-menu');
+    if (!currentPlayer) {
+      showScreen('screen-player-setup');
+    } else {
+      showScreen('screen-menu');
+    }
   } else {
     err.textContent = "Ronron incorrect. Réessaie.";
     input.value = '';
@@ -1719,81 +2132,139 @@ function checkPassword() {
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if (id === 'screen-menu') refreshMastery();
+  if (id === 'screen-menu') refreshMenu();
+  if (id === 'screen-player-setup') initPlayerSetup();
   window.scrollTo(0, 0);
 }
 
 // ============================================================
-// MASTERY — total progression across the 4 games
+// PLAYERS — leaderboard system with cat avatars
 // ============================================================
 const MAX_PER_GAME = 5;
-const MASTERY_KEYS = ['classique-vs-quantique', 'applications', 'risques', 'quebec'];
+const GAME_KEYS = ['classique-vs-quantique', 'applications', 'risques', 'quebec'];
 const PASTILLE_IDS = {
   'classique-vs-quantique': 'ps-cvq',
   'applications': 'ps-app',
   'risques': 'ps-rsq',
   'quebec': 'ps-qbq'
 };
-const mastery = {
-  'classique-vs-quantique': null,
-  'applications': null,
-  'risques': null,
-  'quebec': null
-};
+let currentPlayer = null;
+const players = []; // { id, name, breed, scores: {...} }
+
+function emptyScores() {
+  const o = {};
+  GAME_KEYS.forEach(k => o[k] = null);
+  return o;
+}
+
+function createPlayer(name, breed) {
+  const p = { id: Date.now() + Math.random(), name, breed, scores: emptyScores() };
+  players.push(p);
+  currentPlayer = p;
+  return p;
+}
 
 function recordGameScore(key, score) {
-  // Keep the best score across replays
-  if (mastery[key] === null || score > mastery[key]) {
-    mastery[key] = score;
+  if (!currentPlayer) return;
+  if (currentPlayer.scores[key] === null || score > currentPlayer.scores[key]) {
+    currentPlayer.scores[key] = score;
   }
 }
 
-function resetMastery() {
-  MASTERY_KEYS.forEach(k => { mastery[k] = null; });
-  refreshMastery();
+function totalScore(p) {
+  return Object.values(p.scores).reduce((s, v) => s + (v || 0), 0);
 }
 
-function getMasteryLevel(total) {
-  // total out of 20
-  if (total >= 18) return { name: "Chat d'or",        color: '#D4A93C', state: 'happy',    barColor: '#D4A93C' };
-  if (total >= 14) return { name: "Chat d'argent",    color: '#B8B8B8', state: 'happy',    barColor: '#B8B8B8' };
-  if (total >= 10) return { name: "Chat de bronze",   color: '#A57342', state: 'happy',    barColor: '#A57342' };
-  if (total >= 5)  return { name: "Chaton apprenti",  color: '#5A7570', state: 'awake',    barColor: '#5A7570' };
-  return                  { name: "Chaton novice",    color: '#888888', state: 'sleeping', barColor: '#888888' };
-}
-
-function refreshMastery() {
-  // Compute total
-  const playedScores = MASTERY_KEYS.map(k => mastery[k]);
-  const total = playedScores.reduce((sum, s) => sum + (s || 0), 0);
-  const max = MAX_PER_GAME * MASTERY_KEYS.length;
-  const playedCount = playedScores.filter(s => s !== null).length;
-  const pct = Math.round((total / max) * 100);
-  const level = getMasteryLevel(total);
-
-  // Render mastery card
-  const card = document.getElementById('mastery-card');
-  if (card) {
-    card.innerHTML = `
-      <div class="mastery-cat-wrap" style="border-color:${level.color}; background:${level.color}22;">
-        ${makeCat({state: level.state, size: 64, color: level.color})}
+// ----- Player setup screen -----
+let setupBreed = null;
+function initPlayerSetup() {
+  setupBreed = null;
+  const nameInput = document.getElementById('setup-name');
+  if (nameInput) { nameInput.value = ''; setTimeout(() => nameInput.focus(), 100); }
+  document.getElementById('setup-confirm').disabled = true;
+  document.getElementById('setup-title').textContent = players.length === 0 ? 'Bienvenue !' : 'Nouveau joueur';
+  // Populate breeds
+  const breedKeys = Object.keys(CAT_BREEDS);
+  const grid = document.getElementById('setup-breeds');
+  grid.innerHTML = breedKeys.map(k => {
+    const b = CAT_BREEDS[k];
+    return `
+      <div class="breed-choice" data-breed="${k}" onclick="selectBreed('${k}')">
+        ${makeCat({breed: k, state: 'happy', size: 60})}
+        <div class="breed-name">${b.name}</div>
       </div>
-      <div class="mastery-info">
-        <div class="mastery-label">Niveau de maîtrise</div>
-        <div class="mastery-name" style="color:${level.color === '#888888' ? 'var(--green-dark)' : level.color};">${level.name}</div>
-        <div class="mastery-bar"><div class="mastery-fill" style="width:${pct}%; background:${level.barColor};"></div></div>
-        <div class="mastery-score">${total} / ${max} points · ${playedCount}/4 jeux complétés</div>
-      </div>
-      <button class="mastery-reset" onclick="resetMastery()" title="Remettre tous les scores à zéro">↻ Nouveau joueur</button>
     `;
+  }).join('');
+}
+
+function selectBreed(breed) {
+  setupBreed = breed;
+  document.querySelectorAll('.breed-choice').forEach(el => {
+    el.classList.toggle('selected', el.dataset.breed === breed);
+  });
+  updateSetupBtn();
+}
+
+function updateSetupBtn() {
+  const name = (document.getElementById('setup-name').value || '').trim();
+  document.getElementById('setup-confirm').disabled = !setupBreed || !name;
+}
+
+function confirmPlayerSetup() {
+  const name = document.getElementById('setup-name').value.trim();
+  if (!name || !setupBreed) return;
+  createPlayer(name, setupBreed);
+  showScreen('screen-menu');
+}
+
+function newPlayer() {
+  showScreen('screen-player-setup');
+}
+
+// ----- Menu refresh: leaderboard + pastille badges -----
+function refreshMenu() {
+  // Leaderboard
+  const lb = document.getElementById('leaderboard');
+  if (lb) {
+    if (players.length === 0) {
+      lb.innerHTML = `<div class="lb-empty">Aucun joueur pour le moment.</div>`;
+    } else {
+      const sorted = [...players].sort((a, b) => totalScore(b) - totalScore(a));
+      const max = MAX_PER_GAME * GAME_KEYS.length;
+      const rows = sorted.map((p, i) => {
+        const t = totalScore(p);
+        const pct = Math.round((t / max) * 100);
+        const isCurrent = p === currentPlayer;
+        return `
+          <div class="lb-row ${isCurrent ? 'current' : ''}">
+            <div class="lb-rank">${i + 1}</div>
+            <div class="lb-avatar">${makeCat({breed: p.breed, state: 'awake', size: 44})}</div>
+            <div class="lb-info">
+              <div class="lb-name">${escapeHTML(p.name)}</div>
+              <div class="lb-bar"><div class="lb-bar-fill" style="width:${pct}%;"></div></div>
+            </div>
+            <div class="lb-score">${t} / ${max}</div>
+          </div>
+        `;
+      }).join('');
+      lb.innerHTML = `
+        <div class="lb-header">
+          <h3>Classement</h3>
+          <div class="lb-actions">
+            <button class="lb-new-btn" onclick="newPlayer()">↻ Nouveau joueur</button>
+          </div>
+        </div>
+        <div class="lb-list">${rows}</div>
+      `;
+    }
   }
 
-  // Update each pastille's score badge
-  MASTERY_KEYS.forEach(k => {
+  // Pastille badges (current player's scores)
+  GAME_KEYS.forEach(k => {
     const el = document.getElementById(PASTILLE_IDS[k]);
     if (!el) return;
-    const s = mastery[k];
-    if (s === null) {
+    const s = currentPlayer ? currentPlayer.scores[k] : null;
+    if (s === null || s === undefined) {
       el.textContent = "Pas encore joué";
       el.className = 'pastille-score';
     } else if (s === MAX_PER_GAME) {
@@ -1804,6 +2275,10 @@ function refreshMastery() {
       el.className = 'pastille-score has-score';
     }
   });
+}
+
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 const GAME_CONFIG = {
@@ -2372,18 +2847,18 @@ const PANELS = {
   // ----- Q5 — environment (decoherence) -----
   q5Classical: () => `
     <div class="env-box warm">
-      <div class="env-temp-top">☀️ 20 °C</div>
+      <div class="env-temp-top">${inlineIcon('sun', 22)} 20 °C</div>
       ${makeCat({state: 'awake', size: 80})}
       <div class="env-label">Conditions ambiantes</div>
     </div>
   `,
   q5Quantum: () => `
     <div class="env-box cold">
-      <div class="env-temp-top">❄️ 15 mK</div>
+      <div class="env-temp-top">${inlineIcon('snowflake', 22)} 15 mK</div>
       ${makeCat({state: 'awake', size: 80})}
       <div class="env-label">Cryostat isolé</div>
-      <span class="snow snow-l">❄️</span>
-      <span class="snow snow-r">❄️</span>
+      <span class="snow snow-l">${inlineIcon('snowflake', 18)}</span>
+      <span class="snow snow-r">${inlineIcon('snowflake', 18)}</span>
     </div>
   `
 };
@@ -2440,23 +2915,23 @@ function renderRecap() {
 // ============================================================
 
 const APP_QUIZ = [
-  { id: 1, category: 'quantique', icon: '🔓',
+  { id: 1, category: 'quantique', icon: 'lock',
     situation: "Casser un chiffrement RSA-2048",
     explanation: "Avantage <strong>exponentiel</strong> grâce à l'algorithme de Shor (1994). C'est précisément ce qui rend la cryptographie post-quantique urgente.",
     reference: "Algorithme de Shor — 1994" },
-  { id: 9, category: 'classique', icon: '✉️',
+  { id: 9, category: 'classique', icon: 'email',
     situation: "Envoyer un courriel",
     explanation: "Tâche séquentielle simple. Aucun bénéfice quantique. Un ordinateur classique fait ça parfaitement en quelques millisecondes.",
     reference: "Protocoles SMTP/IMAP — classique standard" },
-  { id: 5, category: 'hybride', icon: '🤖',
+  { id: 5, category: 'hybride', icon: 'robot',
     situation: "Entraîner un grand modèle d'IA (type ChatGPT)",
     explanation: "Débat actif. Quelques sous-tâches (algèbre linéaire, échantillonnage) <em>pourraient</em> bénéficier du quantique, mais l'entraînement reste majoritairement classique aujourd'hui.",
     reference: "Quantum Machine Learning — recherche en cours" },
-  { id: 2, category: 'quantique', icon: '🧬',
+  { id: 2, category: 'quantique', icon: 'molecule',
     situation: "Simuler une molécule complexe pour un nouveau médicament",
     explanation: "Les molécules obéissent aux lois de la mécanique quantique. Un ordinateur quantique les simule <strong>nativement</strong>, là où le classique doit approximer. C'est un avantage de nature, pas seulement de vitesse.",
     reference: "IBM + Moderna · Amgen + Quantinuum" },
-  { id: 11, category: 'classique', icon: '🌐',
+  { id: 11, category: 'classique', icon: 'web',
     situation: "Afficher cette page web dans un navigateur",
     explanation: "Ironique mais vrai : un ordinateur quantique serait <em>moins</em> efficace. Le rendu graphique est massivement parallèle sur GPU classique, déjà optimal.",
     reference: "Moteurs de rendu HTML/CSS — classiques" }
@@ -2490,7 +2965,7 @@ function appRender() {
     catEl.innerHTML = makeCat({state: 'awake', size: 60});
     stage.innerHTML = `
       <div class="apq-intro-card">
-        <div class="big-emoji">🐱</div>
+        <div class="big-emoji">${makeCat({state: 'happy', size: 80})}</div>
         <h3>Quantique, Hybride ou Classique ?</h3>
         <p class="lead">5 situations. À toi de juger où le quantique fait vraiment la différence.</p>
         <p class="helper">Le quantique n'est pas universellement meilleur. Sauras-tu repérer où il brille — et où il est inutile ?</p>
@@ -2554,7 +3029,7 @@ function appRender() {
     catEl.innerHTML = makeCat({state: 'awake', size: 60});
     stage.innerHTML = `
       <div class="apq-question-card">
-        <div class="apq-icon">${q.icon}</div>
+        <div class="apq-icon">${ICONS[q.icon] || q.icon}</div>
         <div class="apq-situation">${q.situation}</div>
       </div>
       <p class="apq-prompt">Cette tâche bénéficie-t-elle d'un ordinateur quantique ?</p>
@@ -2582,7 +3057,7 @@ function appRender() {
 
   stage.innerHTML = `
     <div class="apq-question-card">
-      <div class="apq-icon">${q.icon}</div>
+      <div class="apq-icon">${ICONS[q.icon] || q.icon}</div>
       <div class="apq-situation">${q.situation}</div>
     </div>
     <div class="apq-result ${isCorrect ? 'correct' : 'wrong'}">
@@ -2636,23 +3111,23 @@ function appNext() {
 // ============================================================
 
 const RSQ_CARDS = [
-  { id: 1, category: 'maintenant', icon: '📧',
+  { id: 1, category: 'maintenant', icon: 'email',
     situation: "« Vos courriels sensibles d'aujourd'hui pourraient être lus dans 10 ans »",
     explanation: "Des cybercriminels collectent <strong>dès maintenant</strong> les données chiffrées en pariant sur le futur. C'est ce qu'on appelle <em>« voler maintenant, déchiffrer plus tard »</em>.",
     reference: "Harvest now, decrypt later — déjà documenté" },
-  { id: 10, category: 'faux', icon: '🥖',
+  { id: 10, category: 'faux', icon: 'baguette',
     situation: "« Un ordinateur quantique va pirater votre boulangerie demain matin »",
     explanation: "Faux. Les ordinateurs quantiques actuels sont <strong>fragiles, rares et coûtent des dizaines de millions</strong>. Personne ne les utilisera pour cibler une PME directement.",
     reference: "Réalité du marché 2026" },
-  { id: 5, category: 'bientot', icon: '💊',
+  { id: 5, category: 'bientot', icon: 'pill',
     situation: "« Un concurrent pharmaceutique sort un médicament 5 ans avant vous »",
     explanation: "Pfizer, Biogen, Moderna utilisent déjà des algorithmes quantiques pour la recherche de médicaments. <strong>L'écart se creuse</strong>.",
     reference: "IBM + Moderna · McKinsey 2025" },
-  { id: 7, category: 'plus-tard', icon: '🏦',
+  { id: 7, category: 'plus-tard', icon: 'bank',
     situation: "« Un ordinateur quantique parvient à casser le chiffrement bancaire actuel »",
     explanation: "C'est ce qu'on appelle le <strong>« Q-Day »</strong>. Estimé entre <strong>2030 et 2035</strong> par la majorité des experts.",
     reference: "Global Risk Institute — Quantum Threat Timeline" },
-  { id: 2, category: 'maintenant', icon: '🛡️',
+  { id: 2, category: 'maintenant', icon: 'shield',
     situation: "« Une PME canadienne a 2 chances sur 3 de subir une cyberattaque cette année »",
     explanation: "<strong>72 % des PME canadiennes</strong> ont été attaquées en 2023. Le quantique va amplifier cet écart en cassant le chiffrement actuel.",
     reference: "KPMG Canada — Cybersécurité PME 2023" }
@@ -2693,7 +3168,7 @@ function rsqRender() {
     catEl.innerHTML = makeCat({state: 'awake', size: 60});
     stage.innerHTML = `
       <div class="apq-intro-card">
-        <div class="big-emoji">🐱</div>
+        <div class="big-emoji">${makeCat({state: 'awake', size: 80})}</div>
         <h3>Quand faut-il s'inquiéter ?</h3>
         <p class="lead">5 cartes-risques. À toi de les placer sur la bonne case de la frise temporelle.</p>
         <p class="helper">Tous les risques quantiques ne se valent pas : certains sont déjà là, d'autres sont à 5-10 ans, et certains sont carrément des mythes. Sauras-tu faire la différence ?</p>
@@ -2765,7 +3240,7 @@ function rsqRender() {
     }).join('');
     stage.innerHTML = `
       <div class="rsq-card-display">
-        <div class="rsq-icon">${c.icon}</div>
+        <div class="rsq-icon">${ICONS[c.icon] || c.icon}</div>
         <div class="rsq-situation">${c.situation}</div>
       </div>
       <p class="rsq-prompt">Où placerais-tu ce risque sur la frise temporelle ?</p>
@@ -2792,7 +3267,7 @@ function rsqRender() {
 
   stage.innerHTML = `
     <div class="rsq-card-display">
-      <div class="rsq-icon">${c.icon}</div>
+      <div class="rsq-icon">${ICONS[c.icon] || c.icon}</div>
       <div class="rsq-situation">${c.situation}</div>
     </div>
     <div class="apq-result ${isCorrect ? 'correct' : 'wrong'}">
@@ -2846,23 +3321,23 @@ function rsqNext() {
 // ============================================================
 
 const QBQ_QUESTIONS = [
-  { id: 1, answer: 'vrai', city: 'montreal', icon: '🏢',
+  { id: 1, answer: 'vrai', city: 'montreal', icon: 'building',
     affirmation: "Il existe un ordinateur quantique fonctionnel à Montréal, à quelques rues de HEC.",
     explanation: "Vrai. <strong>MonarQ</strong>, un ordinateur quantique supraconducteur de <strong>24 qubits</strong>, est installé à l'ÉTS — à quelques minutes de marche d'HEC. Il est opéré par la communauté académique pour la recherche et la formation.",
     reference: "MonarQ — ÉTS Montréal" },
-  { id: 2, answer: 'vrai', city: 'bromont', icon: '🖥️',
+  { id: 2, answer: 'vrai', city: 'bromont', icon: 'computer',
     affirmation: "IBM a installé un de ses ordinateurs quantiques commerciaux au Québec.",
     explanation: "Vrai. Un <strong>IBM Quantum System One</strong> est installé à <strong>Bromont</strong>, dans la zone d'innovation Technum Québec. Il est opéré par PINQ² (Plateforme d'innovation numérique et quantique), un OSBL qui rend cette puissance accessible aux entreprises.",
     reference: "IBM Quantum System One · PINQ² · Bromont" },
-  { id: 3, answer: 'faux', city: 'sherbrooke', icon: '🚀',
+  { id: 3, answer: 'faux', city: 'sherbrooke', icon: 'rocket',
     affirmation: "Le quantique au Québec est uniquement de la recherche universitaire — il n'y a pas encore d'entreprises commerciales.",
     explanation: "Faux. Le Québec abrite plusieurs <strong>startups quantiques</strong> actives, notamment <strong>Nord Quantique</strong> (Sherbrooke) qui développe ses propres processeurs, et <strong>Pasqal</strong>. L'écosystème combine recherche (Institut Quantique UdeS), industrie et infrastructures partagées (PINQ²).",
     reference: "Nord Quantique · Pasqal · Institut Quantique UdeS" },
-  { id: 4, answer: 'vrai', city: 'sherbrooke', icon: '🏗️',
+  { id: 4, answer: 'vrai', city: 'sherbrooke', icon: 'crane',
     affirmation: "Sherbrooke abrite la première zone d'innovation dédiée au quantique au Canada.",
     explanation: "Vrai. <strong>DistriQ</strong> est la zone d'innovation quantique de Sherbrooke. Elle regroupe l'Institut Quantique de l'UdeS, des startups et des laboratoires de pointe. C'est un cas rare au Canada d'un territoire entièrement structuré autour du quantique.",
     reference: "DistriQ — Zone d'innovation Sherbrooke" },
-  { id: 5, answer: 'faux', city: 'bromont', icon: '🍁',
+  { id: 5, answer: 'faux', city: 'bromont', icon: 'maple-leaf',
     affirmation: "Pour qu'une PME québécoise utilise un ordinateur quantique, elle doit obligatoirement passer par les États-Unis ou la Chine.",
     explanation: "Faux. <strong>PINQ²</strong> à Bromont offre une plateforme hybride (quantique + classique) accessible aux PME canadiennes, sans qu'elles aient besoin de posséder ou d'importer l'infrastructure. Le Québec est l'un des rares endroits au monde où une PME peut tester un ordinateur quantique commercial localement.",
     reference: "PINQ² — accès quantique pour PME canadiennes" }
@@ -2908,7 +3383,7 @@ function qbqRender() {
     catEl.innerHTML = makeCat({state: 'awake', size: 60});
     stage.innerHTML = `
       <div class="apq-intro-card">
-        <div class="big-emoji">🐱🍁</div>
+        <div class="big-emoji">${makeCat({state: 'happy', size: 80})}${ICONS['maple-leaf'].replace('<svg ', '<svg width="60" height="60" ')}</div>
         <h3>Vrai ou Faux : le Québec quantique ?</h3>
         <p class="lead">5 affirmations sur ce qui se passe juste à côté de chez vous.</p>
         <p class="helper">Le Québec joue un rôle qu'on imagine rarement dans la révolution quantique. Sauras-tu distinguer la réalité du mythe ?</p>
@@ -2991,7 +3466,7 @@ function qbqRender() {
     catEl.innerHTML = makeCat({state: 'awake', size: 60});
     stage.innerHTML = `
       <div class="qbq-affirmation-card">
-        <div class="qbq-icon">${q.icon}</div>
+        <div class="qbq-icon">${ICONS[q.icon] || q.icon}</div>
         <div class="qbq-affirmation">« ${q.affirmation} »</div>
       </div>
       <p class="qbq-prompt">Ton verdict ?</p>
@@ -3018,7 +3493,7 @@ function qbqRender() {
 
   stage.innerHTML = `
     <div class="qbq-affirmation-card">
-      <div class="qbq-icon">${q.icon}</div>
+      <div class="qbq-icon">${ICONS[q.icon] || q.icon}</div>
       <div class="qbq-affirmation">« ${q.affirmation} »</div>
     </div>
     <div class="apq-result ${isCorrect ? 'correct' : 'wrong'}">
