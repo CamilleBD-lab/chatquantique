@@ -1,0 +1,137 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:03.040
+ Le quantique fait couler beaucoup d'encre.
+
+00:00:03.040 --> 00:00:06.040
+ Mais dans les prochaines minutes, ce que je vous propose, c'est d'aller au concret.
+
+00:00:06.040 --> 00:00:11.040
+ Trois domaines où le quantique va changer les règles, pas juste accélérer les calculs.
+
+00:00:11.040 --> 00:00:13.040
+ Prenons la logistique.
+
+00:00:13.040 --> 00:00:17.040
+ Pour livrer à 10 villes, il y a 3,6 millions de routes possibles.
+
+00:00:17.040 --> 00:00:20.040
+ À 30 villes, il y en a plus que le nombre d'atomes dans le soleil.
+
+00:00:20.040 --> 00:00:23.040
+ Et c'est pas parce qu'on a juste ajouté beaucoup de villes.
+
+00:00:23.040 --> 00:00:25.040
+ C'est parce que chaque ville multiplie le problème.
+
+00:00:25.040 --> 00:00:27.040
+ Et c'est celle à complexité qui est exponentielle.
+
+00:00:27.040 --> 00:00:31.040
+ Un ordinateur classique n'a pas vraiment le choix et va essayer les options une par une.
+
+00:00:31.040 --> 00:00:35.040
+ Et ce que le quantique permet de faire, c'est de les explorer tout en même temps.
+
+00:00:35.040 --> 00:00:39.040
+ Et cet avantage-là s'applique partout où un problème de ce type-là existe.
+
+00:00:39.040 --> 00:00:43.040
+ Que ce soit en logistique, mais aussi en finance ou en planification énergétique.
+
+00:00:43.040 --> 00:00:48.040
+ Un domaine qui m'intéresse particulièrement par ma formation, c'est la découverte des médicaments.
+
+00:00:48.040 --> 00:00:51.040
+ Puis elle illustre très bien ce que je veux dire par changer les règles.
+
+00:00:51.040 --> 00:00:56.040
+ Un ordinateur classique simule une molécule en la traduisant un variable mathématique.
+
+00:00:56.040 --> 00:01:02.040
+ Par contre, ce nombre de variables-là explose de façon exponentielle en fonction de la taille des molécules.
+
+00:01:02.040 --> 00:01:07.040
+ Puis c'est le même problème qu'en logistique, sauf que cette fois-ci, approximé, a des conséquences.
+
+00:01:07.040 --> 00:01:10.040
+ La physique moléculaire ne pardonne pas les raccourcis.
+
+00:01:10.040 --> 00:01:16.040
+ L'ordinateur quantique, ce qu'il permet de faire, c'est de ne pas traduire, en fait, il est quantique.
+
+00:01:16.040 --> 00:01:20.040
+ C'est cubit ou baisse aux mêmes lois que les atomes qu'il essaie de simuler.
+
+00:01:20.040 --> 00:01:24.040
+ Donc c'est pas seulement un avantage de vitesse, c'est un avantage par nature.
+
+00:01:24.040 --> 00:01:30.040
+ Puis concrètement, ce que ça va permettre de faire, c'est prédire l'efficacité d'un composé avant même de le synthétiser.
+
+00:01:30.040 --> 00:01:34.040
+ Si IBM et Moderna travaillent actuellement à ça,
+
+00:01:34.040 --> 00:01:39.040
+ sur les ARN sages et sur les liaisons peptidiques, on peut s'attendre à ce que, dans le futur,
+
+00:01:39.040 --> 00:01:44.040
+ mettre un médicament en marché prenne moins de 10 ans actuel, puis coûte moins cher.
+
+00:01:44.040 --> 00:01:49.040
+ Et particulièrement le temps de développement d'un médicament pourrait être raccourci,
+
+00:01:49.040 --> 00:01:55.040
+ potentiellement aussi une amélioration des taux de succès des études cliniques.
+
+00:01:55.040 --> 00:02:00.040
+ Puis, ce qui fait couler le plus d'encre et ce qui fait le plus jaser actuellement, c'est la cryptographie.
+
+00:02:00.040 --> 00:02:02.040
+ Mais avant de vous parler du problème de la cryptographie,
+
+00:02:02.040 --> 00:02:07.040
+ je vais vous expliquer ce sur quoi reposent actuellement les principes de cryptographie.
+
+00:02:07.040 --> 00:02:11.040
+ La sécurité de nos communications actuellement repose sur un problème mathématique.
+
+00:02:11.040 --> 00:02:16.040
+ C'est qu'en fait, factoriser un nombre, c'est astronomiquement long pour un ordinateur classique.
+
+00:02:16.040 --> 00:02:20.040
+ Puis quand on prend de très grands nombres premiers, ça permet en fait de...
+
+00:02:20.040 --> 00:02:22.040
+ C'est ça qui protège vos courriels et vos transactions aujourd'hui.
+
+00:02:22.040 --> 00:02:30.040
+ Mais depuis 1994, Charles a montré qu'un algorithme quantique peut résoudre ce type de problème-là en quelques heures seulement.
+
+00:02:30.040 --> 00:02:33.040
+ Là, je vous rassure, cet ordinateur-là n'existe pas encore.
+
+00:02:33.040 --> 00:02:37.040
+ En fait, les qubits sont très tragiles, très sensible aux perturbations.
+
+00:02:37.040 --> 00:02:45.040
+ Par contre, selon IBM, les premiers ordinateurs capables de faire ça pourraient être attendus entre 2030 et 2035.
+
+00:02:45.040 --> 00:02:51.040
+ Et c'est pourquoi il y a des standards qui ont été finalisés en cryptographie post-quantique.
+
+00:02:51.040 --> 00:02:55.040
+ Et la migration commence actuellement dans les grandes organisations.
+
+00:02:55.040 --> 00:03:03.040
+ Ce que ces trois domaines-là ont en commun, en fait, c'est que le quantique est non seulement plus rapide,
+
+00:03:03.040 --> 00:03:07.040
+ mais aussi fait... permet de faire des choses que le classique ne peut pas faire du tout.
+
+00:03:07.040 --> 00:03:11.040
+ On passe d'une approximation du réel à une simulation du réel.
+
+00:03:11.040 --> 00:03:18.040
+ Et ça, la technologie, même si elle n'est pas là encore, on voit déjà qu'il y a des répercussions et qu'il y a des choses qui se mettent en place déjà.
+

@@ -2389,19 +2389,22 @@ const GAME_CONFIG = {
     title: "2 — Les applications du quantique",
     videoTitle: "Où le quantique fait la différence",
     videoCaption: "Pharma, finance, logistique, IA, matériaux, cryptographie : les domaines où le quantique apporte un vrai avantage — et ceux où c'est du battage.",
-    videoEmbed: null
+    videoEmbed: 'Applications.mp4',
+    videoSubtitlesKey: 'fr-applications'
   },
   "risques": {
     title: "3 — Risques stratégiques",
     videoTitle: "Les risques stratégiques du quantique",
     videoCaption: "« Harvest now, decrypt later », retard concurrentiel, dépendance technologique : ce que les entreprises risquent en attendant trop.",
-    videoEmbed: null
+    videoEmbed: 'Risques.mp4',
+    videoSubtitlesKey: 'fr-risques'
   },
   "quebec": {
     title: "4 — Le quantique au Québec",
     videoTitle: "Le quantique au Québec",
     videoCaption: "Sherbrooke, DistriQ, Bromont, IBM Quantum System One, PINQ² : un écosystème québécois en plein essor.",
-    videoEmbed: null
+    videoEmbed: 'Quebec.mp4',
+    videoSubtitlesKey: 'fr-quebec'
   }
 };
 
@@ -2550,8 +2553,290 @@ function vttTimeToSec(s) {
   return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(sec[0]) + parseInt(sec[1]) / 1000;
 }
 
+const VTT_QUEBEC_FR = `WEBVTT
+
+00:00:00.000 --> 00:00:06.120
+Je vous emmène avec moi pour la partie 4.
+
+00:00:06.120 --> 00:00:09.940
+Quelles sont les initiatives et projets quantiques au Québec ?
+
+00:00:09.940 --> 00:00:16.260
+On est habitué d'entendre dire qu'il y a énormément d'initiatives sur le quantique un peu partout dans le monde,
+
+00:00:16.260 --> 00:00:24.720
+mais quand on s'attarde à ce qui se passe au Québec et au Canada, ça nous donne un aperçu un peu plus concret de ce qui se développe dans le milieu.
+
+00:00:24.720 --> 00:00:30.040
+Le Québec et le Canada se positionnent comme des chefs de file mondiaux dans le domaine.
+
+00:00:30.040 --> 00:00:39.980
+On a vraiment un écosystème qui est passé d'un écosystème de recherche fondamentale à des applications concrètes, comme on va pouvoir voir dans les prochains slides.
+
+00:00:39.980 --> 00:00:53.820
+Tout cela découle vraiment de la Stratégie nationale quantique du Canada qui s'en est suivie de beaucoup d'investissements fédéraux massifs pour soutenir les domaines mentionnés ici.
+
+00:00:53.820 --> 00:01:08.460
+On a plusieurs initiatives qui sont listées que ce soit à Montréal, à Québec, à Sherbrooke, et on a aussi des initiatives très intéressantes comme D-Wave en Colombie-Britannique.
+
+00:01:08.460 --> 00:01:16.940
+On a vraiment des pionniers dans notre écosystème, que ce soit au Canada, mais surtout au Québec.
+
+00:01:16.940 --> 00:01:32.100
+Allons voir ce qui se passe au Québec. Ce qui est très intéressant, c'est que Montréal est reconnu comme étant un hub en IA, mais aussi en quantique — ce qui en fait le lieu d'intersection entre l'IA et le quantique.
+
+00:01:32.100 --> 00:01:46.880
+On a une initiative très intéressante : Calcul Québec. Une application très mathématique : on gère des supercalculateurs et on intègre de plus en plus de simulations quantiques pour les chercheurs.
+
+00:01:46.880 --> 00:02:06.660
+On a aussi des partenariats IA-quantique : la collaboration entre IVADO, qui regroupe énormément de joueurs en IA, et PINQ², qui vise à explorer comment le quantique peut accélérer l'apprentissage automatique (le machine learning).
+
+00:02:06.660 --> 00:02:33.120
+Quand on se dirige vers Sherbrooke : Sherbrooke est reconnu pour le quantique au Québec avec la zone d'innovation DistriQ. Cette zone regroupe chercheurs et entreprises ; on a un réseau universitaire très fort avec l'Institut Quantique de l'UdeS, et un écosystème de startups solide.
+
+00:02:33.120 --> 00:02:46.640
+On y trouve Pasqal, Nord Quantique, et des laboratoires de pointe — c'est très intéressant parce que ça se développe rapidement et on est très bien équipés à Sherbrooke pour suivre la tendance.
+
+00:02:46.640 --> 00:03:05.600
+Essentiellement, DistriQ — la zone d'innovation à Sherbrooke — regroupe chercheurs et entreprises. On y trouve Espace Quantique 1, un bâtiment dédié aux startups et aux laboratoires de pointe. Un environnement très riche pour le développement des startups et du quantique au Québec.
+
+00:03:05.600 --> 00:03:27.280
+Passons maintenant à Bromont. Bromont a été ma grande surprise quand j'ai fait mes recherches sur les projets quantiques au Québec. Bromont se démarque comme un hub quantique important : IBM, géant mondial, y est établi.
+
+00:03:27.280 --> 00:03:51.920
+La zone d'innovation Technum Québec à Bromont regroupe IBM Canada (qui opère l'IBM Quantum System One), C2MI, et autour, PINQ² — la Plateforme d'innovation numérique et quantique.
+
+00:03:51.920 --> 00:04:14.560
+Cela crée vraiment un écosystème très intéressant. PINQ² est un OSBL qui opère l'ordinateur quantique d'IBM, mais qui propose aussi un système hybride (à la fois quantique et classique). Cela permet aux entreprises — des PME aux plus grandes — d'accéder à la puissance de calcul quantique sans devoir en posséder l'infrastructure.
+
+00:04:14.560 --> 00:04:24.560
+C'est vraiment un outil de démocratisation du savoir. Merci d'avoir écouté notre présentation !
+`;
+
+const VTT_RISQUES_FR = `WEBVTT
+
+00:00:00.000 --> 00:00:08.000
+Passons maintenant aux risques stratégiques pour les entreprises qui ignorent l'informatique quantique.
+
+00:00:08.000 --> 00:00:20.000
+Imaginez : il faut gérer une entreprise — pas nécessairement une multinationale, peut-être un cabinet comptable à Québec, une clinique, une PME en construction à Calgary.
+
+00:00:20.000 --> 00:00:29.000
+Et ce matin, quelqu'un a peut-être copié tous vos fichiers chiffrés — pas pour les lire maintenant, mais pour les lire dans sept ans.
+
+00:00:29.000 --> 00:00:32.000
+Quand la technologie le permettra.
+
+00:00:32.000 --> 00:00:39.000
+C'est exactement ce que font certains acteurs malveillants aujourd'hui. Ça s'appelle le « Harvest Now, Decrypt Later ».
+
+00:00:39.000 --> 00:00:46.000
+Et selon l'ANSSI, 50 % des organisations sont déjà exposées à cette menace.
+
+00:00:46.000 --> 00:00:56.000
+Souvent à travers leur VPN d'entreprise, leurs certificats de longue durée, ou des outils que tout le monde utilise sans y penser.
+
+00:00:56.000 --> 00:01:03.000
+Pourtant, 30 % des grandes entreprises ignorent encore cette menace, selon Capgemini.
+
+00:01:03.000 --> 00:01:08.000
+Si les grandes entreprises l'ignorent, imaginez les PME.
+
+00:01:08.000 --> 00:01:15.000
+Parce que l'enjeu dépasse largement la cryptographie. Trois risques avancent en parallèle.
+
+00:01:15.000 --> 00:01:29.000
+On a parlé de la bombe cryptographique, mais on voit aussi un retard compétitif, surtout dans des domaines comme la pharmaceutique, la finance ou la logistique.
+
+00:01:29.000 --> 00:01:38.000
+Sachant qu'un algorithme de trading légèrement supérieur représente des millions de dollars de plus par jour.
+
+00:01:38.000 --> 00:01:40.000
+On ne rattrape pas ça.
+
+00:01:40.000 --> 00:01:56.000
+On parle aussi de dépendance géopolitique : en ce moment, la Chine détient 54 % des brevets quantiques mondiaux — environ 15 milliards $ US, contre 1,8 milliard pour les États-Unis.
+
+00:01:56.000 --> 00:02:04.000
+La course quantique mondiale est déjà entamée, et la Chine est bien en avance.
+
+00:02:04.000 --> 00:02:14.000
+Voyons ce que ça implique pour les PME canadiennes. À ce jour, peut-être que vos données sont déjà volées.
+
+00:02:14.000 --> 00:02:25.000
+Vos fournisseurs logiciels peuvent aussi devenir non conformes : quand la technologie post-quantique sera déployée partout,
+
+00:02:25.000 --> 00:02:32.000
+il y aura une migration forcée — coûts imprévus, voire arrêts de production.
+
+00:02:32.000 --> 00:02:46.000
+La conformité réglementaire change déjà : en 2025, le gouvernement du Canada a mandaté la migration post-quantique pour tous ses ministères.
+
+00:02:46.000 --> 00:02:51.000
+Le déploiement complet est prévu d'ici 2035.
+
+00:02:51.000 --> 00:03:04.000
+La bonne nouvelle : se préparer à cet événement post-quantique, ça ne coûte presque rien aujourd'hui.
+
+00:03:04.000 --> 00:03:24.000
+Faire l'inventaire de nos données sensibles, demander à son fournisseur IT s'il a une feuille de route post-quantique, suivre les grandes compagnies comme Microsoft ou Google qui ont déjà une stratégie post-quantique en place.
+
+00:03:24.000 --> 00:03:34.000
+Suivre au maximum les mises à jour, et rester informé en utilisant les ressources gouvernementales.
+
+00:03:34.000 --> 00:03:42.000
+Ce qu'il faut retenir : la migration post-quantique prend des années, mais le coût pour agir maintenant est faible, presque nul.
+
+00:03:42.000 --> 00:03:45.000
+Le coût d'attendre, lui, est fatal.
+
+00:03:45.000 --> 00:03:46.000
+Merci.
+`;
+
+const VTT_APPLICATIONS_FR = `WEBVTT
+
+00:00:00.000 --> 00:00:03.040
+Le quantique fait couler beaucoup d'encre.
+
+00:00:03.040 --> 00:00:06.040
+Mais dans les prochaines minutes, je vous propose d'aller au concret.
+
+00:00:06.040 --> 00:00:11.040
+Trois domaines où le quantique va changer les règles, pas juste accélérer les calculs.
+
+00:00:11.040 --> 00:00:13.040
+Prenons la logistique.
+
+00:00:13.040 --> 00:00:17.040
+Pour livrer à 10 villes, il y a 3,6 millions de routes possibles.
+
+00:00:17.040 --> 00:00:20.040
+À 30 villes, il y en a plus que le nombre d'atomes dans le Soleil.
+
+00:00:20.040 --> 00:00:23.040
+Ce n'est pas parce qu'on a juste ajouté beaucoup de villes.
+
+00:00:23.040 --> 00:00:25.040
+C'est parce que chaque ville multiplie le problème.
+
+00:00:25.040 --> 00:00:27.040
+C'est ce qu'on appelle une complexité exponentielle.
+
+00:00:27.040 --> 00:00:31.040
+Un ordinateur classique n'a pas vraiment le choix : il essaie les options une par une.
+
+00:00:31.040 --> 00:00:35.040
+Ce que le quantique permet de faire, c'est de toutes les explorer en même temps.
+
+00:00:35.040 --> 00:00:39.040
+Et cet avantage s'applique partout où un problème de ce type existe.
+
+00:00:39.040 --> 00:00:43.040
+Que ce soit en logistique, mais aussi en finance ou en planification énergétique.
+
+00:00:43.040 --> 00:00:48.040
+Un domaine qui m'intéresse particulièrement par ma formation : la découverte de médicaments.
+
+00:00:48.040 --> 00:00:51.040
+Elle illustre très bien ce que je veux dire par « changer les règles ».
+
+00:00:51.040 --> 00:00:56.040
+Un ordinateur classique simule une molécule en la traduisant en variables mathématiques.
+
+00:00:56.040 --> 00:01:02.040
+Mais ce nombre de variables explose de façon exponentielle en fonction de la taille des molécules.
+
+00:01:02.040 --> 00:01:07.040
+Même problème qu'en logistique, sauf que cette fois-ci, approximer a des conséquences.
+
+00:01:07.040 --> 00:01:10.040
+La physique moléculaire ne pardonne pas les raccourcis.
+
+00:01:10.040 --> 00:01:16.040
+L'ordinateur quantique, lui, ne traduit pas — il est, par nature, quantique.
+
+00:01:16.040 --> 00:01:20.040
+Ses qubits obéissent aux mêmes lois que les atomes qu'il essaie de simuler.
+
+00:01:20.040 --> 00:01:24.040
+Donc ce n'est pas seulement un avantage de vitesse — c'est un avantage de nature.
+
+00:01:24.040 --> 00:01:30.040
+Concrètement, ça permet de prédire l'efficacité d'un composé avant même de le synthétiser.
+
+00:01:30.040 --> 00:01:34.040
+IBM et Moderna travaillent actuellement à ça,
+
+00:01:34.040 --> 00:01:39.040
+sur les ARN messagers et sur les liaisons peptidiques. Dans le futur, on peut s'attendre
+
+00:01:39.040 --> 00:01:44.040
+à ce que mettre un médicament en marché prenne moins de 10 ans, et coûte moins cher.
+
+00:01:44.040 --> 00:01:49.040
+Le temps de développement d'un médicament pourrait être raccourci,
+
+00:01:49.040 --> 00:01:55.040
+avec potentiellement aussi une amélioration des taux de succès des études cliniques.
+
+00:01:55.040 --> 00:02:00.040
+Ce qui fait couler le plus d'encre actuellement, c'est la cryptographie.
+
+00:02:00.040 --> 00:02:02.040
+Mais avant de vous parler du problème,
+
+00:02:02.040 --> 00:02:07.040
+je vais vous expliquer ce sur quoi reposent actuellement les principes de cryptographie.
+
+00:02:07.040 --> 00:02:11.040
+La sécurité de nos communications repose sur un problème mathématique.
+
+00:02:11.040 --> 00:02:16.040
+Factoriser un nombre, c'est astronomiquement long pour un ordinateur classique.
+
+00:02:16.040 --> 00:02:20.040
+Et quand on prend de très grands nombres premiers, ça permet de chiffrer.
+
+00:02:20.040 --> 00:02:22.040
+C'est ça qui protège vos courriels et vos transactions aujourd'hui.
+
+00:02:22.040 --> 00:02:30.040
+Mais depuis 1994, Shor a montré qu'un algorithme quantique peut résoudre ce type de problème en quelques heures seulement.
+
+00:02:30.040 --> 00:02:33.040
+Je vous rassure, cet ordinateur n'existe pas encore.
+
+00:02:33.040 --> 00:02:37.040
+Les qubits sont très fragiles, très sensibles aux perturbations.
+
+00:02:37.040 --> 00:02:45.040
+Par contre, selon IBM, les premiers ordinateurs capables de faire ça pourraient être attendus entre 2030 et 2035.
+
+00:02:45.040 --> 00:02:51.040
+C'est pourquoi des standards ont été finalisés en cryptographie post-quantique.
+
+00:02:51.040 --> 00:02:55.040
+Et la migration commence actuellement dans les grandes organisations.
+
+00:02:55.040 --> 00:03:03.040
+Ce que ces trois domaines ont en commun : le quantique n'est pas seulement plus rapide,
+
+00:03:03.040 --> 00:03:07.040
+il permet de faire des choses que le classique ne peut pas faire du tout.
+
+00:03:07.040 --> 00:03:11.040
+On passe d'une approximation du réel à une simulation du réel.
+
+00:03:11.040 --> 00:03:18.040
+Même si la technologie n'est pas là encore, on voit déjà qu'il y a des répercussions et que des choses se mettent en place.
+`;
+
 const SUBTITLES = {
-  'fr': parseVTT(VTT_QUANTIQUE_FR)
+  'fr': parseVTT(VTT_QUANTIQUE_FR),
+  'fr-quebec': parseVTT(VTT_QUEBEC_FR),
+  'fr-risques': parseVTT(VTT_RISQUES_FR),
+  'fr-applications': parseVTT(VTT_APPLICATIONS_FR)
 };
 
 function attachSubtitles(cues) {
